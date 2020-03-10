@@ -1,8 +1,8 @@
-import { TradeOpen } from '../generated/fs_exchanges/Events'
+import { TradeOpen } from '../generated/Futureswap/Events'
 import { Exchange } from '../generated/schema'
 
-export function handleTradeOpen(event: TradeOpen): void {
-  let trade = new Exchange(event.params._tradeId.toHex())
+export function handleNewTradeOpen(event: TradeOpen): void {
+  let trade = new Exchange(event.params._tradeId.toString())
   trade.tradeOwner = event.params._tradeOwner
   trade.isLong = event.params._isLong
   trade.collateral = event.params._collateral

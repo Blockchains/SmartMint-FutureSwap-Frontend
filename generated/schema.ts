@@ -42,13 +42,13 @@ export class Exchange extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get tradeId(): BigInt {
+  get tradeId(): string {
     let value = this.get("tradeId");
-    return value.toBigInt();
+    return value.toString();
   }
 
-  set tradeId(value: BigInt) {
-    this.set("tradeId", Value.fromBigInt(value));
+  set tradeId(value: string) {
+    this.set("tradeId", Value.fromString(value));
   }
 
   get tradeOwner(): Bytes {

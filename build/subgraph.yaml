@@ -5,11 +5,12 @@ schema:
   file: schema.graphql
 dataSources:
   - kind: ethereum/contract
-    name: fs_exchanges
+    name: Futureswap
     network: rinkeby
     source:
-      address: "0xC4fC00FeBb37c9fe56a247CD5A380870Ce5Fcf16"
+      address: "0xe678bf9f07F46511045E7730Ebd1543D4b868c08"
       abi: Events
+      startBlock: 6072323
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -18,10 +19,10 @@ dataSources:
         - Futureswap
       abis:
         - name: Events
-          file: fs_exchanges/abis/Events.json
+          file: Futureswap/abis/Events.json
       eventHandlers:
         - event: TradeOpen(indexed uint256,indexed
             address,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,indexed
             address)
           handler: handleNewTradeOpen
-      file: fs_exchanges/fs_exchanges.wasm
+      file: Futureswap/Futureswap.wasm
