@@ -2,13 +2,13 @@ specVersion: 0.0.2
 description: Futureswap Exchanges
 repository: https://github.com/futureswap/fs_graph
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum/contract
     name: fs_exchanges
     network: rinkeby
     source:
-      address: '0xC4fC00FeBb37c9fe56a247CD5A380870Ce5Fcf16'
+      address: "0xC4fC00FeBb37c9fe56a247CD5A380870Ce5Fcf16"
       abi: Events
     mapping:
       kind: ethereum/events
@@ -18,8 +18,10 @@ dataSources:
         - Futureswap
       abis:
         - name: Events
-          file: ./abis/Events.json
+          file: fs_exchanges/abis/Events.json
       eventHandlers:
-        - event: TradeOpen(indexed uint256,indexed address,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
+        - event: TradeOpen(indexed uint256,indexed
+            address,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,indexed
+            address)
           handler: handleNewTradeOpen
-      file: ./src/mapping.ts
+      file: fs_exchanges/fs_exchanges.wasm

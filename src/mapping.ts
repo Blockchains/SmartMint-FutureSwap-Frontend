@@ -1,22 +1,18 @@
-import { NewGravatar, UpdatedGravatar } from '../generated/Gravity/Gravity'
-import { Gravatar } from '../generated/schema'
+import { TradeOpen } from '../generated/fs_exchanges/Events'
+import { Exchange } from '../generated/schema'
 
-export function handleNewGravatar(event: NewGravatar): void {
-  let gravatar = new Gravatar(event.params.id.toHex())
-  gravatar.owner = event.params.owner
-  gravatar.displayName = event.params.displayName
-  gravatar.imageUrl = event.params.imageUrl
-  gravatar.save()
+export function handleTradeOpen(event: TradeOpen): void {
+  let trade = new Exchange(event.params._tradeId.toHex())
+  trade.tradeOwner = event.params._tradeOwner
+  trade.isLong = event.params._isLong
+  trade.collateral = event.params._collateral
+  trade.leverage = event.params._leverage
+  trade.assetPrice = event.params._assetPrice
+  trade.stablePrice = event.params._stablePrice
+  trade.openFee = event.params._openFee
+  trade.oracleRoundId = event.params._oracleRoundId
+  trade.timestamp = event.params._timestamp
+  trade.referral = event.params._referral
+  trade.save()
 }
 
-export function handleUpdatedGravatar(event: UpdatedGravatar): void {
-  let id = event.params.id.toHex()
-  let gravatar = Gravatar.load(id)
-  if (gravatar == null) {
-    gravatar = new Gravatar(id)
-  }
-  gravatar.owner = event.params.owner
-  gravatar.displayName = event.params.displayName
-  gravatar.imageUrl = event.params.imageUrl
-  gravatar.save()
-}
