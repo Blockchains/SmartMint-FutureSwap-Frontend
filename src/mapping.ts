@@ -1,8 +1,8 @@
-import { TradeOpen, TradeClose } from '../generated/Futureswap/Events'
-import { Trade } from '../generated/schema'
+import { TradeOpen, TradeClose, TradeLiquidate } from '../generated/Futureswap/Events'
+import { Trade, Liquidation } from '../generated/schema'
 
 export function handleNewTradeOpen(event: TradeOpen): void {
-  let trade = new Trade(event.params._tradeId.toString())
+  let trade = new Trade(event.params._tradeId.toHex())
   trade.tradeId = event.params._tradeId
   trade.exchange = event.address
   trade.tradeOpen = true
@@ -20,7 +20,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
 }
 
 export function handleNewTradeClose(event: TradeClose): void {
-  let trade = new Trade(event.params._tradeId.toString())
+  let trade = new Trade(event.params._tradeId.toHex())
   trade.tradeId = event.params._tradeId
   trade.exchange = event.address
   trade.tradeOpen = false
@@ -38,10 +38,18 @@ export function handleNewTradeClose(event: TradeClose): void {
 
 
 
+export function handleNewLiquidate(event: TradeLiquidate): void {
+  let liquidation = new Liquidation(event.params._tradeId.toHex())
+  liquidation.exchange = event.address
+  liquidation.tradeOwner = event.params._tradeOwner
+  liquidation.liquidator = event.params._liquidator
+  liquidation.liquidatorReturn = event.params._liquidatorReturn
+  liquidation.liqTraderReturn = event.params._liqTraderReturn
+  liquidation.timestamp = event.params._timestamp
+
+}
 
 // - AddCollateral(indexed uint256,indexed address,uint256,uint256,uint256)
 //   - FrontRunning(indexed uint256,indexed address,int256)
-//   - TradeClose(indexed uint256,indexed address,bool,bool,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
 //   - TradeLiquidate(indexed uint256,indexed address,indexed address,uint256,uint256,uint256)
-//   - TradeOpen(indexed uint256,indexed address,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
 //   - UpdateLiquidity(indexed address,uint256,uint256,uint256,uint256,bool,uint256)

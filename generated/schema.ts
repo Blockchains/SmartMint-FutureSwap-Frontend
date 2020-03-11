@@ -218,3 +218,88 @@ export class Trade extends Entity {
     this.set("referral", Value.fromBytes(value));
   }
 }
+
+export class Liquidation extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Liquidation entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Liquidation entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Liquidation", id.toString(), this);
+  }
+
+  static load(id: string): Liquidation | null {
+    return store.get("Liquidation", id) as Liquidation | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get exchange(): Bytes {
+    let value = this.get("exchange");
+    return value.toBytes();
+  }
+
+  set exchange(value: Bytes) {
+    this.set("exchange", Value.fromBytes(value));
+  }
+
+  get tradeOwner(): Bytes {
+    let value = this.get("tradeOwner");
+    return value.toBytes();
+  }
+
+  set tradeOwner(value: Bytes) {
+    this.set("tradeOwner", Value.fromBytes(value));
+  }
+
+  get liquidator(): Bytes {
+    let value = this.get("liquidator");
+    return value.toBytes();
+  }
+
+  set liquidator(value: Bytes) {
+    this.set("liquidator", Value.fromBytes(value));
+  }
+
+  get liquidatorReturn(): BigInt {
+    let value = this.get("liquidatorReturn");
+    return value.toBigInt();
+  }
+
+  set liquidatorReturn(value: BigInt) {
+    this.set("liquidatorReturn", Value.fromBigInt(value));
+  }
+
+  get liqTraderReturn(): BigInt {
+    let value = this.get("liqTraderReturn");
+    return value.toBigInt();
+  }
+
+  set liqTraderReturn(value: BigInt) {
+    this.set("liqTraderReturn", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+}

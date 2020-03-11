@@ -24,4 +24,7 @@ dataSources:
           handler: handleNewTradeOpen
         - event: TradeClose(indexed uint256,indexed address,bool,bool,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
           handler: handleNewTradeClose
+        - event: TradeLiquidate(indexed uint256,indexed address,indexed address,uint256,uint256,uint256)
+          handler: handleNewLiquidate
+
       file: ./src/mapping.ts

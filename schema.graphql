@@ -18,3 +18,12 @@ type Trade @entity {
   referral: Bytes!
 }
 
+type Liquidation @entity {
+    id: ID!
+    exchange: Bytes!
+    tradeOwner: Bytes!
+    liquidator: Bytes!
+    liquidatorReturn: BigInt!
+    liqTraderReturn: BigInt!
+    timestamp: BigInt!
+}

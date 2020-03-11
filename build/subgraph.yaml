@@ -28,4 +28,7 @@ dataSources:
             address,bool,bool,uint256,uint256,uint256,uint256,uint256,uint256,indexed
             address)
           handler: handleNewTradeClose
+        - event: TradeLiquidate(indexed uint256,indexed address,indexed
+            address,uint256,uint256,uint256)
+          handler: handleNewLiquidate
       file: Futureswap/Futureswap.wasm
