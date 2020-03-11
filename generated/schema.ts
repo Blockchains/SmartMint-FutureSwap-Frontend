@@ -12,7 +12,7 @@ import {
   BigDecimal
 } from "@graphprotocol/graph-ts";
 
-export class Exchange extends Entity {
+export class Trade extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
@@ -20,17 +20,17 @@ export class Exchange extends Entity {
 
   save(): void {
     let id = this.get("id");
-    assert(id !== null, "Cannot save Exchange entity without an ID");
+    assert(id !== null, "Cannot save Trade entity without an ID");
     assert(
       id.kind == ValueKind.STRING,
-      "Cannot save Exchange entity with non-string ID. " +
+      "Cannot save Trade entity with non-string ID. " +
         'Considering using .toHex() to convert the "id" to a string.'
     );
-    store.set("Exchange", id.toString(), this);
+    store.set("Trade", id.toString(), this);
   }
 
-  static load(id: string): Exchange | null {
-    return store.get("Exchange", id) as Exchange | null;
+  static load(id: string): Trade | null {
+    return store.get("Trade", id) as Trade | null;
   }
 
   get id(): string {
@@ -42,13 +42,31 @@ export class Exchange extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get tradeId(): string {
-    let value = this.get("tradeId");
-    return value.toString();
+  get exchange(): Bytes {
+    let value = this.get("exchange");
+    return value.toBytes();
   }
 
-  set tradeId(value: string) {
-    this.set("tradeId", Value.fromString(value));
+  set exchange(value: Bytes) {
+    this.set("exchange", Value.fromBytes(value));
+  }
+
+  get tradeId(): BigInt {
+    let value = this.get("tradeId");
+    return value.toBigInt();
+  }
+
+  set tradeId(value: BigInt) {
+    this.set("tradeId", Value.fromBigInt(value));
+  }
+
+  get tradeOpen(): boolean {
+    let value = this.get("tradeOpen");
+    return value.toBoolean();
+  }
+
+  set tradeOpen(value: boolean) {
+    this.set("tradeOpen", Value.fromBoolean(value));
   }
 
   get tradeOwner(): Bytes {
@@ -69,6 +87,15 @@ export class Exchange extends Entity {
     this.set("isLong", Value.fromBoolean(value));
   }
 
+  get isLiquidated(): boolean {
+    let value = this.get("isLiquidated");
+    return value.toBoolean();
+  }
+
+  set isLiquidated(value: boolean) {
+    this.set("isLiquidated", Value.fromBoolean(value));
+  }
+
   get collateral(): BigInt {
     let value = this.get("collateral");
     return value.toBigInt();
@@ -85,6 +112,23 @@ export class Exchange extends Entity {
 
   set leverage(value: BigInt) {
     this.set("leverage", Value.fromBigInt(value));
+  }
+
+  get protectedAssetOpenPrice(): BigInt | null {
+    let value = this.get("protectedAssetOpenPrice");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set protectedAssetOpenPrice(value: BigInt | null) {
+    if (value === null) {
+      this.unset("protectedAssetOpenPrice");
+    } else {
+      this.set("protectedAssetOpenPrice", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get assetPrice(): BigInt {
@@ -105,22 +149,55 @@ export class Exchange extends Entity {
     this.set("stablePrice", Value.fromBigInt(value));
   }
 
-  get openFee(): BigInt {
+  get redemptionAmount(): BigInt | null {
+    let value = this.get("redemptionAmount");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set redemptionAmount(value: BigInt | null) {
+    if (value === null) {
+      this.unset("redemptionAmount");
+    } else {
+      this.set("redemptionAmount", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get openFee(): BigInt | null {
     let value = this.get("openFee");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set openFee(value: BigInt) {
-    this.set("openFee", Value.fromBigInt(value));
+  set openFee(value: BigInt | null) {
+    if (value === null) {
+      this.unset("openFee");
+    } else {
+      this.set("openFee", Value.fromBigInt(value as BigInt));
+    }
   }
 
-  get oracleRoundId(): BigInt {
+  get oracleRoundId(): BigInt | null {
     let value = this.get("oracleRoundId");
-    return value.toBigInt();
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set oracleRoundId(value: BigInt) {
-    this.set("oracleRoundId", Value.fromBigInt(value));
+  set oracleRoundId(value: BigInt | null) {
+    if (value === null) {
+      this.unset("oracleRoundId");
+    } else {
+      this.set("oracleRoundId", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get timestamp(): BigInt {

@@ -1,14 +1,19 @@
-type Exchange @entity {
+type Trade @entity {
   id: ID!
+  exchange: Bytes!
   tradeId: BigInt!
+  tradeOpen: Boolean!
   tradeOwner: Bytes!
-  isLong: Boolean
+  isLong: Boolean!
+  isLiquidated: Boolean
   collateral: BigInt!
   leverage: BigInt!
+  protectedAssetOpenPrice: BigInt
   assetPrice: BigInt!
   stablePrice: BigInt!
-  openFee: BigInt!
-  oracleRoundId: BigInt!
+  redemptionAmount: BigInt
+  openFee: BigInt
+  oracleRoundId: BigInt
   timestamp: BigInt!
   referral: Bytes!
 }

@@ -8,9 +8,8 @@ dataSources:
     name: Futureswap
     network: rinkeby
     source:
-      address: '0xe678bf9f07F46511045E7730Ebd1543D4b868c08'
       abi: Events
-      startBlock: 6072323
+      startBlock: 5072323
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -23,4 +22,6 @@ dataSources:
       eventHandlers:
         - event: TradeOpen(indexed uint256,indexed address,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
           handler: handleNewTradeOpen
+        - event: TradeClose(indexed uint256,indexed address,bool,bool,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
+          handler: handleNewTradeClose
       file: ./src/mapping.ts
