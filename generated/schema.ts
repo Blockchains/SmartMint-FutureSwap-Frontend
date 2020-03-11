@@ -249,6 +249,15 @@ export class Liquidation extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get tradeId(): BigInt {
+    let value = this.get("tradeId");
+    return value.toBigInt();
+  }
+
+  set tradeId(value: BigInt) {
+    this.set("tradeId", Value.fromBigInt(value));
+  }
+
   get exchange(): Bytes {
     let value = this.get("exchange");
     return value.toBytes();
@@ -301,5 +310,90 @@ export class Liquidation extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class Collateral extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Collateral entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Collateral entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Collateral", id.toString(), this);
+  }
+
+  static load(id: string): Collateral | null {
+    return store.get("Collateral", id) as Collateral | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tradeId(): BigInt {
+    let value = this.get("tradeId");
+    return value.toBigInt();
+  }
+
+  set tradeId(value: BigInt) {
+    this.set("tradeId", Value.fromBigInt(value));
+  }
+
+  get exchange(): Bytes {
+    let value = this.get("exchange");
+    return value.toBytes();
+  }
+
+  set exchange(value: Bytes) {
+    this.set("exchange", Value.fromBytes(value));
+  }
+
+  get tradeOwner(): Bytes {
+    let value = this.get("tradeOwner");
+    return value.toBytes();
+  }
+
+  set tradeOwner(value: Bytes) {
+    this.set("tradeOwner", Value.fromBytes(value));
+  }
+
+  get addedCollateral(): BigInt {
+    let value = this.get("addedCollateral");
+    return value.toBigInt();
+  }
+
+  set addedCollateral(value: BigInt) {
+    this.set("addedCollateral", Value.fromBigInt(value));
+  }
+
+  get assetPrice(): BigInt {
+    let value = this.get("assetPrice");
+    return value.toBigInt();
+  }
+
+  set assetPrice(value: BigInt) {
+    this.set("assetPrice", Value.fromBigInt(value));
+  }
+
+  get stablePrice(): BigInt {
+    let value = this.get("stablePrice");
+    return value.toBigInt();
+  }
+
+  set stablePrice(value: BigInt) {
+    this.set("stablePrice", Value.fromBigInt(value));
   }
 }

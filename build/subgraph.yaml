@@ -31,4 +31,6 @@ dataSources:
         - event: TradeLiquidate(indexed uint256,indexed address,indexed
             address,uint256,uint256,uint256)
           handler: handleNewLiquidate
+        - event: AddCollateral(indexed uint256,indexed address,uint256,uint256,uint256)
+          handler: handleAddCollateral
       file: Futureswap/Futureswap.wasm

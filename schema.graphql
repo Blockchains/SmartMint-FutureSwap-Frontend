@@ -20,10 +20,21 @@ type Trade @entity {
 
 type Liquidation @entity {
     id: ID!
+    tradeId: BigInt!
     exchange: Bytes!
     tradeOwner: Bytes!
     liquidator: Bytes!
     liquidatorReturn: BigInt!
     liqTraderReturn: BigInt!
     timestamp: BigInt!
+}
+
+type Collateral @entity {
+    id: ID!
+    tradeId: BigInt!
+    exchange: Bytes!
+    tradeOwner: Bytes!
+    addedCollateral: BigInt!
+    assetPrice: BigInt!
+    stablePrice: BigInt!
 }
