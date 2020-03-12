@@ -397,3 +397,173 @@ export class Collateral extends Entity {
     this.set("stablePrice", Value.fromBigInt(value));
   }
 }
+
+export class FrontRunningCase extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save FrontRunningCase entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save FrontRunningCase entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("FrontRunningCase", id.toString(), this);
+  }
+
+  static load(id: string): FrontRunningCase | null {
+    return store.get("FrontRunningCase", id) as FrontRunningCase | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get tradeId(): BigInt {
+    let value = this.get("tradeId");
+    return value.toBigInt();
+  }
+
+  set tradeId(value: BigInt) {
+    this.set("tradeId", Value.fromBigInt(value));
+  }
+
+  get exchange(): Bytes {
+    let value = this.get("exchange");
+    return value.toBytes();
+  }
+
+  set exchange(value: Bytes) {
+    this.set("exchange", Value.fromBytes(value));
+  }
+
+  get tradeOwner(): Bytes {
+    let value = this.get("tradeOwner");
+    return value.toBytes();
+  }
+
+  set tradeOwner(value: Bytes) {
+    this.set("tradeOwner", Value.fromBytes(value));
+  }
+
+  get protectedOpenPrice(): BigInt {
+    let value = this.get("protectedOpenPrice");
+    return value.toBigInt();
+  }
+
+  set protectedOpenPrice(value: BigInt) {
+    this.set("protectedOpenPrice", Value.fromBigInt(value));
+  }
+}
+
+export class LiquidityAddition extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save LiquidityAddition entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save LiquidityAddition entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("LiquidityAddition", id.toString(), this);
+  }
+
+  static load(id: string): LiquidityAddition | null {
+    return store.get("LiquidityAddition", id) as LiquidityAddition | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get exchange(): Bytes {
+    let value = this.get("exchange");
+    return value.toBytes();
+  }
+
+  set exchange(value: Bytes) {
+    this.set("exchange", Value.fromBytes(value));
+  }
+
+  get provider(): Bytes {
+    let value = this.get("provider");
+    return value.toBytes();
+  }
+
+  set provider(value: Bytes) {
+    this.set("provider", Value.fromBytes(value));
+  }
+
+  get assetTokenAmount(): BigInt {
+    let value = this.get("assetTokenAmount");
+    return value.toBigInt();
+  }
+
+  set assetTokenAmount(value: BigInt) {
+    this.set("assetTokenAmount", Value.fromBigInt(value));
+  }
+
+  get stableTokenAmount(): BigInt {
+    let value = this.get("stableTokenAmount");
+    return value.toBigInt();
+  }
+
+  set stableTokenAmount(value: BigInt) {
+    this.set("stableTokenAmount", Value.fromBigInt(value));
+  }
+
+  get LSTPrice(): BigInt {
+    let value = this.get("LSTPrice");
+    return value.toBigInt();
+  }
+
+  set LSTPrice(value: BigInt) {
+    this.set("LSTPrice", Value.fromBigInt(value));
+  }
+
+  get LiquidityMinted(): BigInt {
+    let value = this.get("LiquidityMinted");
+    return value.toBigInt();
+  }
+
+  set LiquidityMinted(value: BigInt) {
+    this.set("LiquidityMinted", Value.fromBigInt(value));
+  }
+
+  get addedLiquidity(): boolean {
+    let value = this.get("addedLiquidity");
+    return value.toBoolean();
+  }
+
+  set addedLiquidity(value: boolean) {
+    this.set("addedLiquidity", Value.fromBoolean(value));
+  }
+
+  get timestamp(): BigInt {
+    let value = this.get("timestamp");
+    return value.toBigInt();
+  }
+
+  set timestamp(value: BigInt) {
+    this.set("timestamp", Value.fromBigInt(value));
+  }
+}

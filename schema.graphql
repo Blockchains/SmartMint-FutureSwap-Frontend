@@ -38,3 +38,23 @@ type Collateral @entity {
     assetPrice: BigInt!
     stablePrice: BigInt!
 }
+
+type FrontRunningCase @entity {
+    id: ID!
+    tradeId: BigInt!
+    exchange: Bytes!
+    tradeOwner: Bytes!
+    protectedOpenPrice: BigInt!
+}
+
+type LiquidityAddition @ entity {
+  id: ID!
+  exchange: Bytes!
+  provider: Bytes!
+  assetTokenAmount: BigInt!
+  stableTokenAmount: BigInt!
+  LSTPrice: BigInt!
+  LiquidityMinted: BigInt!
+  addedLiquidity: Boolean!
+  timestamp: BigInt!
+}

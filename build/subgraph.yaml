@@ -9,7 +9,7 @@ dataSources:
     network: rinkeby
     source:
       abi: Events
-      startBlock: 5072323
+      startBlock: 6072323
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
@@ -33,4 +33,8 @@ dataSources:
           handler: handleNewLiquidate
         - event: AddCollateral(indexed uint256,indexed address,uint256,uint256,uint256)
           handler: handleAddCollateral
+        - event: FrontRunning(indexed uint256,indexed address,int256)
+          handler: handleFrontRunning
+        - event: UpdateLiquidity(indexed address,uint256,uint256,uint256,uint256,bool,uint256)
+          handler: handleUpdateLiquidity
       file: Futureswap/Futureswap.wasm
