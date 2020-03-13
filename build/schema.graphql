@@ -5,7 +5,6 @@ type Trade @entity {
   tradeOpen: Boolean!
   tradeOwner: Bytes!
   isLong: Boolean!
-  isLiquidated: Boolean
   collateral: BigInt!
   leverage: BigInt!
   protectedAssetOpenPrice: BigInt

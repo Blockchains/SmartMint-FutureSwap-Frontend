@@ -87,15 +87,6 @@ export class Trade extends Entity {
     this.set("isLong", Value.fromBoolean(value));
   }
 
-  get isLiquidated(): boolean {
-    let value = this.get("isLiquidated");
-    return value.toBoolean();
-  }
-
-  set isLiquidated(value: boolean) {
-    this.set("isLiquidated", Value.fromBoolean(value));
-  }
-
   get collateral(): BigInt {
     let value = this.get("collateral");
     return value.toBigInt();

@@ -2,7 +2,8 @@ import { TradeOpen, TradeClose, TradeLiquidate, AddCollateral, FrontRunning, Upd
 import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition } from '../generated/schema'
 
 export function handleNewTradeOpen(event: TradeOpen): void {
-  let trade = new Trade(event.params._tradeId.toHex())
+  let id = event.address.toHexString().concat("-").concat(event.params._tradeId.toString())
+  let trade = new Trade(id)
   trade.tradeId = event.params._tradeId
   trade.exchange = event.address
   trade.tradeOpen = true
@@ -20,7 +21,8 @@ export function handleNewTradeOpen(event: TradeOpen): void {
 }
 
 export function handleNewTradeClose(event: TradeClose): void {
-  let trade = new Trade(event.params._tradeId.toHex())
+  let id = event.address.toHexString().concat("-").concat(event.params._tradeId.toString())
+  let trade = new Trade(id)
   trade.tradeId = event.params._tradeId
   trade.exchange = event.address
   trade.tradeOpen = false
@@ -39,7 +41,7 @@ export function handleNewTradeClose(event: TradeClose): void {
 
 
 export function handleNewLiquidate(event: TradeLiquidate): void {
-  let liquidation = new Liquidation(event.params._tradeId.toHex())
+  let liquidation = new Liquidation(event.transaction.hash.toHex())
   liquidation.exchange = event.address
   liquidation.tradeId = event.params._tradeId
   liquidation.tradeOwner = event.params._tradeOwner
@@ -51,7 +53,7 @@ export function handleNewLiquidate(event: TradeLiquidate): void {
 }
 
 export function handleAddCollateral(event: AddCollateral): void {
-  let addCollateral = new Collateral(event.params._tradeId.toHex())
+  let addCollateral = new Collateral(event.transaction.hash.toHex())
   addCollateral.exchange = event.address
   addCollateral.tradeId = event.params._tradeId
   addCollateral.tradeOwner = event.params._tradeOwner
@@ -62,7 +64,7 @@ export function handleAddCollateral(event: AddCollateral): void {
 }
 
 export function handleFrontRunning(event: FrontRunning): void {
-  let frontrunning = new FrontRunningCase(event.params._tradeId.toHex())
+  let frontrunning = new FrontRunningCase(event.transaction.hash.toHex())
   frontrunning.exchange = event.address
   frontrunning.tradeId = event.params._tradeId
   frontrunning.tradeOwner = event.params._tradeOwner
