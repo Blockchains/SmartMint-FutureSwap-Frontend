@@ -140,8 +140,8 @@ export class Trade extends Entity {
     this.set("stablePrice", Value.fromBigInt(value));
   }
 
-  get redemptionAmount(): BigInt | null {
-    let value = this.get("redemptionAmount");
+  get assetRedemptionAmount(): BigInt | null {
+    let value = this.get("assetRedemptionAmount");
     if (value === null) {
       return null;
     } else {
@@ -149,11 +149,11 @@ export class Trade extends Entity {
     }
   }
 
-  set redemptionAmount(value: BigInt | null) {
+  set assetRedemptionAmount(value: BigInt | null) {
     if (value === null) {
-      this.unset("redemptionAmount");
+      this.unset("assetRedemptionAmount");
     } else {
-      this.set("redemptionAmount", Value.fromBigInt(value as BigInt));
+      this.set("assetRedemptionAmount", Value.fromBigInt(value as BigInt));
     }
   }
 
@@ -276,22 +276,22 @@ export class Liquidation extends Entity {
     this.set("liquidator", Value.fromBytes(value));
   }
 
-  get liquidatorReturn(): BigInt {
-    let value = this.get("liquidatorReturn");
+  get stableToSendLiquidator(): BigInt {
+    let value = this.get("stableToSendLiquidator");
     return value.toBigInt();
   }
 
-  set liquidatorReturn(value: BigInt) {
-    this.set("liquidatorReturn", Value.fromBigInt(value));
+  set stableToSendLiquidator(value: BigInt) {
+    this.set("stableToSendLiquidator", Value.fromBigInt(value));
   }
 
-  get liqTraderReturn(): BigInt {
-    let value = this.get("liqTraderReturn");
+  get stableToSendTradeOwner(): BigInt {
+    let value = this.get("stableToSendTradeOwner");
     return value.toBigInt();
   }
 
-  set liqTraderReturn(value: BigInt) {
-    this.set("liqTraderReturn", Value.fromBigInt(value));
+  set stableToSendTradeOwner(value: BigInt) {
+    this.set("stableToSendTradeOwner", Value.fromBigInt(value));
   }
 
   get timestamp(): BigInt {
@@ -522,22 +522,22 @@ export class LiquidityAddition extends Entity {
     this.set("stableTokenAmount", Value.fromBigInt(value));
   }
 
-  get LSTPrice(): BigInt {
-    let value = this.get("LSTPrice");
+  get lstPrice(): BigInt {
+    let value = this.get("lstPrice");
     return value.toBigInt();
   }
 
-  set LSTPrice(value: BigInt) {
-    this.set("LSTPrice", Value.fromBigInt(value));
+  set lstPrice(value: BigInt) {
+    this.set("lstPrice", Value.fromBigInt(value));
   }
 
-  get LiquidityMinted(): BigInt {
-    let value = this.get("LiquidityMinted");
+  get liquidityMinted(): BigInt {
+    let value = this.get("liquidityMinted");
     return value.toBigInt();
   }
 
-  set LiquidityMinted(value: BigInt) {
-    this.set("LiquidityMinted", Value.fromBigInt(value));
+  set liquidityMinted(value: BigInt) {
+    this.set("liquidityMinted", Value.fromBigInt(value));
   }
 
   get addedLiquidity(): boolean {
@@ -556,5 +556,116 @@ export class LiquidityAddition extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
+  }
+}
+
+export class Balancer extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id !== null, "Cannot save Balancer entity without an ID");
+    assert(
+      id.kind == ValueKind.STRING,
+      "Cannot save Balancer entity with non-string ID. " +
+        'Considering using .toHex() to convert the "id" to a string.'
+    );
+    store.set("Balancer", id.toString(), this);
+  }
+
+  static load(id: string): Balancer | null {
+    return store.get("Balancer", id) as Balancer | null;
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get exchange(): Bytes {
+    let value = this.get("exchange");
+    return value.toBytes();
+  }
+
+  set exchange(value: Bytes) {
+    this.set("exchange", Value.fromBytes(value));
+  }
+
+  get provider(): Bytes {
+    let value = this.get("provider");
+    return value.toBytes();
+  }
+
+  set provider(value: Bytes) {
+    this.set("provider", Value.fromBytes(value));
+  }
+
+  get isTradingAsset(): boolean {
+    let value = this.get("isTradingAsset");
+    return value.toBoolean();
+  }
+
+  set isTradingAsset(value: boolean) {
+    this.set("isTradingAsset", Value.fromBoolean(value));
+  }
+
+  get assetAmount(): BigInt {
+    let value = this.get("assetAmount");
+    return value.toBigInt();
+  }
+
+  set assetAmount(value: BigInt) {
+    this.set("assetAmount", Value.fromBigInt(value));
+  }
+
+  get stableAmount(): BigInt {
+    let value = this.get("stableAmount");
+    return value.toBigInt();
+  }
+
+  set stableAmount(value: BigInt) {
+    this.set("stableAmount", Value.fromBigInt(value));
+  }
+
+  get assetPrice(): BigInt {
+    let value = this.get("assetPrice");
+    return value.toBigInt();
+  }
+
+  set assetPrice(value: BigInt) {
+    this.set("assetPrice", Value.fromBigInt(value));
+  }
+
+  get stablePrice(): BigInt {
+    let value = this.get("stablePrice");
+    return value.toBigInt();
+  }
+
+  set stablePrice(value: BigInt) {
+    this.set("stablePrice", Value.fromBigInt(value));
+  }
+
+  get timestamp(): BigInt | null {
+    let value = this.get("timestamp");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timestamp(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestamp");
+    } else {
+      this.set("timestamp", Value.fromBigInt(value as BigInt));
+    }
   }
 }

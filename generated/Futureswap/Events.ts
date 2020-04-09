@@ -28,24 +28,28 @@ export class AddCollateral__Params {
     this._event = event;
   }
 
-  get _tradeId(): BigInt {
+  get tradeId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get _tradeOwner(): Address {
+  get tradeOwner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get _addedCollateral(): BigInt {
+  get addedCollateral(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get _assetPrice(): BigInt {
+  get assetPrice(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get _stablePrice(): BigInt {
+  get stablePrice(): BigInt {
     return this._event.parameters[4].value.toBigInt();
+  }
+
+  get timestamp(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
   }
 }
 
@@ -62,16 +66,58 @@ export class FrontRunning__Params {
     this._event = event;
   }
 
-  get _tradeId(): BigInt {
+  get tradeId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get _tradeOwner(): Address {
+  get tradeOwner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get _protectedOpenPrice(): BigInt {
+  get protectedOpenPrice(): BigInt {
     return this._event.parameters[2].value.toBigInt();
+  }
+}
+
+export class InternalExchange extends EthereumEvent {
+  get params(): InternalExchange__Params {
+    return new InternalExchange__Params(this);
+  }
+}
+
+export class InternalExchange__Params {
+  _event: InternalExchange;
+
+  constructor(event: InternalExchange) {
+    this._event = event;
+  }
+
+  get provider(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get isTradingAsset(): boolean {
+    return this._event.parameters[1].value.toBoolean();
+  }
+
+  get assetAmount(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get stableAmount(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get assetPrice(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get stablePrice(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get timestamp(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
   }
 }
 
@@ -88,47 +134,47 @@ export class TradeClose__Params {
     this._event = event;
   }
 
-  get _tradeId(): BigInt {
+  get tradeId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get _tradeOwner(): Address {
+  get tradeOwner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get _isLong(): boolean {
+  get isLong(): boolean {
     return this._event.parameters[2].value.toBoolean();
   }
 
-  get _isLiquidated(): boolean {
+  get isLiquidated(): boolean {
     return this._event.parameters[3].value.toBoolean();
   }
 
-  get _collateral(): BigInt {
+  get collateral(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get _protectedAssetOpenPrice(): BigInt {
+  get protectedAssetOpenPrice(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
 
-  get _assetPrice(): BigInt {
+  get assetPrice(): BigInt {
     return this._event.parameters[6].value.toBigInt();
   }
 
-  get _stablePrice(): BigInt {
+  get stablePrice(): BigInt {
     return this._event.parameters[7].value.toBigInt();
   }
 
-  get _redemptionAmount(): BigInt {
+  get assetRedemptionAmount(): BigInt {
     return this._event.parameters[8].value.toBigInt();
   }
 
-  get _timestamp(): BigInt {
+  get timestamp(): BigInt {
     return this._event.parameters[9].value.toBigInt();
   }
 
-  get _referral(): Address {
+  get referral(): Address {
     return this._event.parameters[10].value.toAddress();
   }
 }
@@ -146,27 +192,27 @@ export class TradeLiquidate__Params {
     this._event = event;
   }
 
-  get _tradeId(): BigInt {
+  get tradeId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get _tradeOwner(): Address {
+  get tradeOwner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get _liquidator(): Address {
+  get liquidator(): Address {
     return this._event.parameters[2].value.toAddress();
   }
 
-  get _liquidatorReturn(): BigInt {
+  get stableToSendLiquidator(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get _liqTraderReturn(): BigInt {
+  get stableToSendTradeOwner(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get _timestamp(): BigInt {
+  get timestamp(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
 }
@@ -184,47 +230,47 @@ export class TradeOpen__Params {
     this._event = event;
   }
 
-  get _tradeId(): BigInt {
+  get tradeId(): BigInt {
     return this._event.parameters[0].value.toBigInt();
   }
 
-  get _tradeOwner(): Address {
+  get tradeOwner(): Address {
     return this._event.parameters[1].value.toAddress();
   }
 
-  get _isLong(): boolean {
+  get isLong(): boolean {
     return this._event.parameters[2].value.toBoolean();
   }
 
-  get _collateral(): BigInt {
+  get collateral(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get _leverage(): BigInt {
+  get leverage(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get _assetPrice(): BigInt {
+  get assetPrice(): BigInt {
     return this._event.parameters[5].value.toBigInt();
   }
 
-  get _stablePrice(): BigInt {
+  get stablePrice(): BigInt {
     return this._event.parameters[6].value.toBigInt();
   }
 
-  get _openFee(): BigInt {
+  get openFee(): BigInt {
     return this._event.parameters[7].value.toBigInt();
   }
 
-  get _oracleRoundId(): BigInt {
+  get oracleRoundId(): BigInt {
     return this._event.parameters[8].value.toBigInt();
   }
 
-  get _timestamp(): BigInt {
+  get timestamp(): BigInt {
     return this._event.parameters[9].value.toBigInt();
   }
 
-  get _referral(): Address {
+  get referral(): Address {
     return this._event.parameters[10].value.toAddress();
   }
 }
@@ -242,31 +288,31 @@ export class UpdateLiquidity__Params {
     this._event = event;
   }
 
-  get _provider(): Address {
+  get provider(): Address {
     return this._event.parameters[0].value.toAddress();
   }
 
-  get _assetTokenAmount(): BigInt {
+  get assetTokenAmount(): BigInt {
     return this._event.parameters[1].value.toBigInt();
   }
 
-  get _stableTokenAmount(): BigInt {
+  get stableTokenAmount(): BigInt {
     return this._event.parameters[2].value.toBigInt();
   }
 
-  get _LSTPrice(): BigInt {
+  get lstPrice(): BigInt {
     return this._event.parameters[3].value.toBigInt();
   }
 
-  get _LiquidityMinted(): BigInt {
+  get liquidityMinted(): BigInt {
     return this._event.parameters[4].value.toBigInt();
   }
 
-  get _addedLiq(): boolean {
+  get addedLiq(): boolean {
     return this._event.parameters[5].value.toBoolean();
   }
 
-  get _timestamp(): BigInt {
+  get timestamp(): BigInt {
     return this._event.parameters[6].value.toBigInt();
   }
 }

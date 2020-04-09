@@ -26,11 +26,15 @@ dataSources:
           handler: handleNewTradeClose
         - event: TradeLiquidate(indexed uint256,indexed address,indexed address,uint256,uint256,uint256)
           handler: handleNewLiquidate
-        - event: AddCollateral(indexed uint256,indexed address,uint256,uint256,uint256)
+        - event:  AddCollateral(indexed uint256,indexed address,uint256,uint256,uint256,uint256)
           handler: handleAddCollateral
         - event: FrontRunning(indexed uint256,indexed address,int256)
           handler: handleFrontRunning
         - event: UpdateLiquidity(indexed address,uint256,uint256,uint256,uint256,bool,uint256)
           handler: handleUpdateLiquidity
+        - event: InternalExchange(indexed address,bool,uint256,uint256,uint256,uint256,uint256)
+          handler: handleInternalExchange
 
       file: ./src/mapping.ts
+
+

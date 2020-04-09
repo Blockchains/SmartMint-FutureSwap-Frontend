@@ -10,7 +10,7 @@ type Trade @entity {
   protectedAssetOpenPrice: BigInt
   assetPrice: BigInt!
   stablePrice: BigInt!
-  redemptionAmount: BigInt
+  assetRedemptionAmount: BigInt
   openFee: BigInt
   oracleRoundId: BigInt
   timestamp: BigInt!
@@ -23,8 +23,8 @@ type Liquidation @entity {
     exchange: Bytes!
     tradeOwner: Bytes!
     liquidator: Bytes!
-    liquidatorReturn: BigInt!
-    liqTraderReturn: BigInt!
+    stableToSendLiquidator: BigInt!
+    stableToSendTradeOwner: BigInt!
     timestamp: BigInt!
 }
 
@@ -52,8 +52,20 @@ type LiquidityAddition @ entity {
   provider: Bytes!
   assetTokenAmount: BigInt!
   stableTokenAmount: BigInt!
-  LSTPrice: BigInt!
-  LiquidityMinted: BigInt!
+  lstPrice: BigInt!
+  liquidityMinted: BigInt!
   addedLiquidity: Boolean!
   timestamp: BigInt!
+}
+
+type Balancer @ entity {
+  id: ID!
+  exchange: Bytes!
+  provider: Bytes!
+  isTradingAsset: Boolean!
+  assetAmount: BigInt!
+  stableAmount: BigInt!
+  assetPrice: BigInt!
+  stablePrice: BigInt!
+  timestamp: BigInt
 }

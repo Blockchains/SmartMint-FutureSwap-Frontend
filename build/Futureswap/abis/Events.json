@@ -5,31 +5,37 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_tradeId",
+        "name": "tradeId",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_tradeOwner",
+        "name": "tradeOwner",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_addedCollateral",
+        "name": "addedCollateral",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_assetPrice",
+        "name": "assetPrice",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_stablePrice",
+        "name": "stablePrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
         "type": "uint256"
       }
     ],
@@ -42,19 +48,19 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_tradeId",
+        "name": "tradeId",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_tradeOwner",
+        "name": "tradeOwner",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "int256",
-        "name": "_protectedOpenPrice",
+        "name": "protectedOpenPrice",
         "type": "int256"
       }
     ],
@@ -66,68 +72,117 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "_tradeId",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
         "internalType": "address",
-        "name": "_tradeOwner",
+        "name": "provider",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "_isLong",
-        "type": "bool"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "_isLiquidated",
+        "name": "isTradingAsset",
         "type": "bool"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_collateral",
+        "name": "assetAmount",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_protectedAssetOpenPrice",
+        "name": "stableAmount",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_assetPrice",
+        "name": "assetPrice",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_stablePrice",
+        "name": "stablePrice",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_redemptionAmount",
+        "name": "timestamp",
         "type": "uint256"
-      },
+      }
+    ],
+    "name": "InternalExchange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
       {
-        "indexed": false,
+        "indexed": true,
         "internalType": "uint256",
-        "name": "_timestamp",
+        "name": "tradeId",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_referral",
+        "name": "tradeOwner",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isLong",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isLiquidated",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "collateral",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "protectedAssetOpenPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "assetPrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "stablePrice",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "assetRedemptionAmount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "referral",
         "type": "address"
       }
     ],
@@ -140,37 +195,37 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_tradeId",
+        "name": "tradeId",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_tradeOwner",
+        "name": "tradeOwner",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_liquidator",
+        "name": "liquidator",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_liquidatorReturn",
+        "name": "stableToSendLiquidator",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_liqTraderReturn",
+        "name": "stableToSendTradeOwner",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_timestamp",
+        "name": "timestamp",
         "type": "uint256"
       }
     ],
@@ -183,67 +238,67 @@
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_tradeId",
+        "name": "tradeId",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_tradeOwner",
+        "name": "tradeOwner",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "_isLong",
+        "name": "isLong",
         "type": "bool"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_collateral",
+        "name": "collateral",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_leverage",
+        "name": "leverage",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_assetPrice",
+        "name": "assetPrice",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_stablePrice",
+        "name": "stablePrice",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_openFee",
+        "name": "openFee",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_oracleRoundId",
+        "name": "oracleRoundId",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_timestamp",
+        "name": "timestamp",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_referral",
+        "name": "referral",
         "type": "address"
       }
     ],
@@ -256,43 +311,43 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_provider",
+        "name": "provider",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_assetTokenAmount",
+        "name": "assetTokenAmount",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_stableTokenAmount",
+        "name": "stableTokenAmount",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_LSTPrice",
+        "name": "lstPrice",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_LiquidityMinted",
+        "name": "liquidityMinted",
         "type": "uint256"
       },
       {
         "indexed": false,
         "internalType": "bool",
-        "name": "_addedLiq",
+        "name": "addedLiq",
         "type": "bool"
       },
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "_timestamp",
+        "name": "timestamp",
         "type": "uint256"
       }
     ],
