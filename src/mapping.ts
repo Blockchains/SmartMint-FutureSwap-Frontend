@@ -15,7 +15,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.stablePrice = event.params.stablePrice
   trade.openFee = event.params.openFee
   trade.oracleRoundId = event.params.oracleRoundId
-  trade.timestamp = event.params.timestamp
+  trade.timestampOpen = event.params.timestamp
   trade.referral = event.params.referral
   trade.save()
 }
@@ -33,7 +33,7 @@ export function handleNewTradeClose(event: TradeClose): void {
   trade.assetPrice = event.params.assetPrice
   trade.stablePrice = event.params.stablePrice
   trade.assetRedemptionAmount = event.params.assetRedemptionAmount
-  trade.timestamp = event.params.timestamp
+  trade.timestampClose = event.params.timestamp
   trade.referral = event.params.referral
   trade.save()
 }

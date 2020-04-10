@@ -13,7 +13,8 @@ type Trade @entity {
   assetRedemptionAmount: BigInt
   openFee: BigInt
   oracleRoundId: BigInt
-  timestamp: BigInt!
+  timestampOpen: BigInt
+  timestampClose: BigInt
   referral: Bytes!
 }
 

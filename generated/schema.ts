@@ -191,13 +191,38 @@ export class Trade extends Entity {
     }
   }
 
-  get timestamp(): BigInt {
-    let value = this.get("timestamp");
-    return value.toBigInt();
+  get timestampOpen(): BigInt | null {
+    let value = this.get("timestampOpen");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set timestamp(value: BigInt) {
-    this.set("timestamp", Value.fromBigInt(value));
+  set timestampOpen(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestampOpen");
+    } else {
+      this.set("timestampOpen", Value.fromBigInt(value as BigInt));
+    }
+  }
+
+  get timestampClose(): BigInt | null {
+    let value = this.get("timestampClose");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set timestampClose(value: BigInt | null) {
+    if (value === null) {
+      this.unset("timestampClose");
+    } else {
+      this.set("timestampClose", Value.fromBigInt(value as BigInt));
+    }
   }
 
   get referral(): Bytes {
