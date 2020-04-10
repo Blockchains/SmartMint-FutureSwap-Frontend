@@ -1,5 +1,5 @@
 import { TradeOpen, TradeClose, TradeLiquidate, AddCollateral, FrontRunning, UpdateLiquidity, InternalExchange } from '../generated/Futureswap/Events'
-import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer } from '../generated/schema'
+import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral } from '../generated/schema'
 
 export function handleNewTradeOpen(event: TradeOpen): void {
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
@@ -18,6 +18,15 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.timestampOpen = event.params.timestamp
   trade.referral = event.params.referral
   trade.save()
+
+  let tradeWithCollateralId = event.transaction.hash.toHex()
+  let tradeWithCollateral = new  TradeWithCollateral(tradeWithCollateralId)
+  tradeWithCollateral.tradeId = event.params.tradeId
+  tradeWithCollateral.initialCollateral = event.params.collateral
+  tradeWithCollateral.exchange = event.address
+  tradeWithCollateral.tradeOwner = event.params.tradeOwner
+  tradeWithCollateral.save()
+  
 }
 
 export function handleNewTradeClose(event: TradeClose): void {
@@ -61,6 +70,15 @@ export function handleAddCollateral(event: AddCollateral): void {
   addCollateral.assetPrice = event.params.assetPrice
   addCollateral.stablePrice = event.params.stablePrice
   addCollateral.save()
+
+  let tradeWithCollateralId = event.transaction.hash.toHex()
+  let tradeWithCollateral = new  TradeWithCollateral(tradeWithCollateralId)
+  tradeWithCollateral.tradeId = event.params.tradeId
+  tradeWithCollateral.addedCollateral = event.params.addedCollateral
+  tradeWithCollateral.exchange = event.address
+  tradeWithCollateral.tradeOwner = event.params.tradeOwner
+  tradeWithCollateral.save()
+  
 }
 
 export function handleFrontRunning(event: FrontRunning): void {

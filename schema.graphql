@@ -70,3 +70,12 @@ type Balancer @ entity {
   stablePrice: BigInt!
   timestamp: BigInt
 }
+
+type TradeWithCollateral @ entity {
+  id: ID!
+  tradeId: BigInt!
+  exchange: Bytes!
+  tradeOwner: Bytes!
+  initialCollateral: BigInt
+  addedCollateral: BigInt
+}
