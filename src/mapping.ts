@@ -23,6 +23,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   let tradeWithCollateral = new  TradeWithCollateral(tradeWithCollateralId)
   tradeWithCollateral.tradeId = event.params.tradeId
   tradeWithCollateral.initialCollateral = event.params.collateral
+  tradeWithCollateral.collateral = event.params.collateral
   tradeWithCollateral.exchange = event.address
   tradeWithCollateral.tradeOwner = event.params.tradeOwner
   tradeWithCollateral.save()
@@ -75,6 +76,7 @@ export function handleAddCollateral(event: AddCollateral): void {
   let tradeWithCollateral = new  TradeWithCollateral(tradeWithCollateralId)
   tradeWithCollateral.tradeId = event.params.tradeId
   tradeWithCollateral.addedCollateral = event.params.addedCollateral
+  tradeWithCollateral.collateral = event.params.addedCollateral
   tradeWithCollateral.exchange = event.address
   tradeWithCollateral.tradeOwner = event.params.tradeOwner
   tradeWithCollateral.save()

@@ -78,4 +78,5 @@ type TradeWithCollateral @ entity {
   tradeOwner: Bytes!
   initialCollateral: BigInt
   addedCollateral: BigInt
+  collateral: BigInt!
 }
