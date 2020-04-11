@@ -1,5 +1,6 @@
 import { TradeOpen, TradeClose, TradeLiquidate, AddCollateral, FrontRunning, UpdateLiquidity, InternalExchange } from '../generated/Futureswap/Events'
-import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral } from '../generated/schema'
+import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral, OpenTrade, CloseTrade } from '../generated/schema'
+import { BigInt, BigDecimal } from '@graphprotocol/graph-ts'
 
 export function handleNewTradeOpen(event: TradeOpen): void {
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
@@ -15,8 +16,8 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.stablePrice = event.params.stablePrice
   trade.openFee = event.params.openFee
   trade.oracleRoundId = event.params.oracleRoundId
-  trade.timestampOpen = event.params.timestamp
-  trade.referral = event.params.referral
+  trade.timestampOpen = event.params.timestamp.toI32()
+  trade.referralOpen = event.params.referral
   trade.save()
 
   let tradeWithCollateralId = event.transaction.hash.toHex()
@@ -27,6 +28,24 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   tradeWithCollateral.exchange = event.address
   tradeWithCollateral.tradeOwner = event.params.tradeOwner
   tradeWithCollateral.save()
+  
+  let tradeOpenedId = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
+  let tradeOpened = new OpenTrade(tradeOpenedId)
+  tradeOpened.tradeId = event.params.tradeId
+  tradeOpened.exchange = event.address
+  tradeOpened.tradeOwner = event.params.tradeOwner
+  tradeOpened.isLong = event.params.isLong
+  tradeOpened.positionValue = event.params.collateral.times(event.params.leverage).times(event.params.assetPrice)
+  tradeOpened.positionSize = event.params.collateral.times(event.params.leverage)
+  tradeOpened.collateral = event.params.collateral
+  tradeOpened.leverage = event.params.leverage
+  tradeOpened.assetPrice = event.params.assetPrice
+  tradeOpened.stablePrice = event.params.stablePrice
+  tradeOpened.openFee = event.params.openFee
+  tradeOpened.oracleRoundId = event.params.oracleRoundId
+  tradeOpened.timestampOpen = event.params.timestamp.toI32()
+  tradeOpened.referral = event.params.referral
+  tradeOpened.save()
   
 }
 
@@ -43,9 +62,24 @@ export function handleNewTradeClose(event: TradeClose): void {
   trade.assetPrice = event.params.assetPrice
   trade.stablePrice = event.params.stablePrice
   trade.assetRedemptionAmount = event.params.assetRedemptionAmount
-  trade.timestampClose = event.params.timestamp
-  trade.referral = event.params.referral
+  trade.timestampClose = event.params.timestamp.toI32()
+  trade.referralClose = event.params.referral
   trade.save()
+
+  let tradeClosedId = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
+  let tradeClosed = new CloseTrade(tradeClosedId)
+  tradeClosed.tradeId = event.params.tradeId
+  tradeClosed.exchange = event.address
+  tradeClosed.tradeOwner = event.params.tradeOwner
+  tradeClosed.isLong = event.params.isLong
+  tradeClosed.collateral = event.params.collateral
+  tradeClosed.assetPrice = event.params.assetPrice
+  tradeClosed.stablePrice = event.params.stablePrice
+  tradeClosed.assetRedemptionAmount = event.params.assetRedemptionAmount
+  tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice)
+  tradeClosed.timestampClose = event.params.timestamp.toI32()
+  tradeClosed.referral = event.params.referral
+  tradeClosed.save()
 }
 
 

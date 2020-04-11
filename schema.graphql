@@ -13,9 +13,10 @@ type Trade @entity {
   assetRedemptionAmount: BigInt
   openFee: BigInt
   oracleRoundId: BigInt
-  timestampOpen: BigInt
-  timestampClose: BigInt
-  referral: Bytes!
+  timestampOpen: Int
+  timestampClose: Int
+  referralClose: Bytes
+  referralOpen: Bytes
 }
 
 type Liquidation @entity {
@@ -79,4 +80,42 @@ type TradeWithCollateral @ entity {
   initialCollateral: BigInt
   addedCollateral: BigInt
   collateral: BigInt!
+}
+
+type CloseTrade @entity {
+  id: ID!
+  exchange: Bytes!
+  tradeId: BigInt!
+  tradeOwner: Bytes!
+  isLong: Boolean!
+  collateral: BigInt!
+  protectedAssetOpenPrice: BigInt
+  assetPrice: BigInt!
+  stablePrice: BigInt!
+  assetRedemptionAmount: BigInt
+  positionValue: BigInt!
+  openFee: BigInt
+  oracleRoundId: BigInt
+  timestampClose: Int
+  referral: Bytes!
+}
+
+type OpenTrade @entity {
+  id: ID!
+  exchange: Bytes!
+  tradeId: BigInt!
+  tradeOwner: Bytes!
+  isLong: Boolean!
+  collateral: BigInt!
+  leverage: BigInt!
+  protectedAssetOpenPrice: BigInt
+  assetPrice: BigInt!
+  stablePrice: BigInt!
+  assetRedemptionAmount: BigInt
+  openFee: BigInt
+  oracleRoundId: BigInt
+  timestampOpen: Int
+  referral: Bytes!
+  positionValue: BigInt!
+  positionSize: BigInt!
 }
