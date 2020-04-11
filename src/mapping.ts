@@ -2,7 +2,10 @@ import { TradeOpen, TradeClose, TradeLiquidate, AddCollateral, FrontRunning, Upd
 import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral, OpenTrade, CloseTrade } from '../generated/schema'
 import { BigInt, BigDecimal } from '@graphprotocol/graph-ts'
 
+
+
 export function handleNewTradeOpen(event: TradeOpen): void {
+  let halfEthBigInt1 = BigInt.fromI32(1000000000)
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
   let trade = new Trade(id)
   trade.tradeId = event.params.tradeId
@@ -35,7 +38,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   tradeOpened.exchange = event.address
   tradeOpened.tradeOwner = event.params.tradeOwner
   tradeOpened.isLong = event.params.isLong
-  tradeOpened.positionValue = event.params.collateral.times(event.params.leverage).times(event.params.assetPrice)
+  tradeOpened.positionValue = event.params.collateral.times(event.params.leverage).times(event.params.assetPrice).div(halfEthBigInt1).div(halfEthBigInt1)
   tradeOpened.positionSize = event.params.collateral.times(event.params.leverage)
   tradeOpened.collateral = event.params.collateral
   tradeOpened.leverage = event.params.leverage
@@ -50,6 +53,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
 }
 
 export function handleNewTradeClose(event: TradeClose): void {
+  let halfEthBigInt1 = BigInt.fromI32(1000000000)
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
   let trade = new Trade(id)
   trade.tradeId = event.params.tradeId
@@ -76,7 +80,7 @@ export function handleNewTradeClose(event: TradeClose): void {
   tradeClosed.assetPrice = event.params.assetPrice
   tradeClosed.stablePrice = event.params.stablePrice
   tradeClosed.assetRedemptionAmount = event.params.assetRedemptionAmount
-  tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice)
+  tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice).div(halfEthBigInt1).div(halfEthBigInt1)
   tradeClosed.timestampClose = event.params.timestamp.toI32()
   tradeClosed.referral = event.params.referral
   tradeClosed.save()
