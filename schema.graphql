@@ -17,6 +17,10 @@ type Trade @entity {
   timestampClose: Int
   referralClose: Bytes
   referralOpen: Bytes
+  stableTokenCollateral: BigInt
+  assetTokenBorrowed: BigInt
+  stablePoolShares: BigInt
+  poolOwnershipShares: BigInt
 }
 
 type Liquidation @entity {
@@ -98,6 +102,10 @@ type CloseTrade @entity {
   oracleRoundId: BigInt
   timestampClose: Int
   referral: Bytes!
+  stableTokenCollateral: BigInt
+  assetTokenBorrowed: BigInt
+  stablePoolShares: BigInt
+  poolOwnershipShares: BigInt
 }
 
 type OpenTrade @entity {
@@ -118,4 +126,8 @@ type OpenTrade @entity {
   referral: Bytes!
   positionValue: BigInt!
   positionSize: BigInt!
+  stableTokenCollateral: BigInt
+  assetTokenBorrowed: BigInt
+  stablePoolShares: BigInt
+  poolOwnershipShares: BigInt
 }

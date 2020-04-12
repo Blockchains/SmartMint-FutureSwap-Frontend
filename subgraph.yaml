@@ -8,7 +8,7 @@ dataSources:
     name: Futureswap
     network: rinkeby
     source:
-      abi: Events
+      abi: Futureswap
       startBlock: 6072323
     mapping:
       kind: ethereum/events
@@ -17,8 +17,8 @@ dataSources:
       entities:
         - Futureswap
       abis:
-        - name: Events
-          file: ./abis/Events.json
+        - name: Futureswap
+          file: ./abis/Futureswap.json
       eventHandlers:
         - event: TradeOpen(indexed uint256,indexed address,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
           handler: handleNewTradeOpen
