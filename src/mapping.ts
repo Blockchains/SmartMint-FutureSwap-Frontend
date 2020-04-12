@@ -1,11 +1,9 @@
 import { Futureswap, TradeOpen, TradeClose, TradeLiquidate, AddCollateral, FrontRunning, UpdateLiquidity, InternalExchange } from '../generated/Futureswap/Futureswap'
 import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral, OpenTrade, CloseTrade } from '../generated/schema'
-import { BigInt, BigDecimal, log } from '@graphprotocol/graph-ts'
-
+import { BigIntEth } from './helpers'
 
 
 export function handleNewTradeOpen(event: TradeOpen): void {
-  let halfEthBigInt1 = BigInt.fromI32(1000000000)
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
   let futureswap = Futureswap.bind(event.address)
   let returnedTrade = futureswap.tradeIdToTrade(event.params.tradeId)
@@ -45,7 +43,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   tradeOpened.exchange = event.address
   tradeOpened.tradeOwner = event.params.tradeOwner
   tradeOpened.isLong = event.params.isLong
-  tradeOpened.positionValue = event.params.collateral.times(event.params.leverage).times(event.params.assetPrice).div(halfEthBigInt1).div(halfEthBigInt1)
+  tradeOpened.positionValue = event.params.collateral.times(event.params.leverage).times(event.params.assetPrice).div(BigIntEth())
   tradeOpened.positionSize = event.params.collateral.times(event.params.leverage)
   tradeOpened.collateral = event.params.collateral
   tradeOpened.leverage = event.params.leverage
@@ -64,7 +62,6 @@ export function handleNewTradeOpen(event: TradeOpen): void {
 }
 
 export function handleNewTradeClose(event: TradeClose): void {
-  let halfEthBigInt1 = BigInt.fromI32(1000000000)
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
   let futureswap = Futureswap.bind(event.address)
   let returnedTrade = futureswap.tradeIdToTrade(event.params.tradeId)
@@ -97,7 +94,7 @@ export function handleNewTradeClose(event: TradeClose): void {
   tradeClosed.assetPrice = event.params.assetPrice
   tradeClosed.stablePrice = event.params.stablePrice
   tradeClosed.assetRedemptionAmount = event.params.assetRedemptionAmount
-  tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice).div(halfEthBigInt1).div(halfEthBigInt1)
+  tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice).div(BigIntEth())
   tradeClosed.timestampClose = event.params.timestamp.toI32()
   tradeClosed.referral = event.params.referral
   tradeClosed.stableTokenCollateral = returnedTrade.value0
