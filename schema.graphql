@@ -138,8 +138,21 @@ type DyanmicFunding @entity {
   exchange: Bytes!
   longSharesOutstanding: BigInt!
   shortSharesOutstanding: BigInt!
-  lastDfrUpdate: BigInt!
   currentDFR: BigInt!
+  timestamp: Int!
+  reason: String!
+}
+
+type TokenPools @entity {
+  id: ID!
+  exchange: Bytes!
+  assetTokenBorrowPool: BigInt!
+  longBorrowValue: BigInt!
+  shortAssetBorrowPool: BigInt!
+  shortBorrowValue: BigInt!
+  stableTokenBorrowPool: BigInt!
+  stableTokenCollateralPool: BigInt!
+  stablePoolSharesOutstanding: BigInt!
   timestamp: Int!
   reason: String!
 }

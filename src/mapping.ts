@@ -2,7 +2,7 @@ import { Futureswap, TradeOpen, TradeClose, TradeLiquidate, AddCollateral, Front
 import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral, OpenTrade, CloseTrade } from '../generated/schema'
 import { BigIntEth } from './helpers'
 import { returnTradesInfo } from './getters'
-import { logDFR } from './loggers'
+import { logDFR, logTokenPools } from './loggers'
 
 
 export function handleNewTradeOpen(event: TradeOpen): void {
@@ -59,7 +59,9 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   tradeOpened.poolOwnershipShares = returnedTrade.poolOwnershipShares
   tradeOpened.save()
 
-  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "TradeOpen")
+  logTokenPools(event.transaction.hash, event.address, event.block.timestamp, "TradeOpen")
+
   
 }
 
@@ -105,7 +107,9 @@ export function handleNewTradeClose(event: TradeClose): void {
   tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares
   tradeClosed.save()
 
-  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "TradeClose")
+  logTokenPools(event.transaction.hash, event.address, event.block.timestamp, "TradeClose")
+
 
 }
 
@@ -122,7 +126,9 @@ export function handleNewLiquidate(event: TradeLiquidate): void {
   liquidation.timestamp = event.params.timestamp
   liquidation.save()
 
-  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "Liquidation")
+  logTokenPools(event.transaction.hash, event.address, event.block.timestamp, "Liquidation")
+
 
 }
 
@@ -146,7 +152,9 @@ export function handleAddCollateral(event: AddCollateral): void {
   tradeWithCollateral.tradeOwner = event.params.tradeOwner
   tradeWithCollateral.save()
   
-  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "AddCollateral")
+  logTokenPools(event.transaction.hash, event.address, event.block.timestamp, "AddCollateral")
+
 
 }
 
@@ -172,7 +180,9 @@ export function handleUpdateLiquidity(event: UpdateLiquidity): void {
   updateLiquidity.timestamp = event.params.timestamp
   updateLiquidity.save()
 
-  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "UpdateLiquidity")
+  logTokenPools(event.transaction.hash, event.address, event.block.timestamp, "UpdateLiquidity")
+
 
 }
 
@@ -188,6 +198,8 @@ export function handleInternalExchange(event: InternalExchange): void {
   balancer.timestamp = event.params.timestamp
   balancer.save()
 
-  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "InternalExchange")
+  logTokenPools(event.transaction.hash, event.address, event.block.timestamp, "InternalExchange")
+
 }
 

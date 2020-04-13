@@ -50,7 +50,6 @@ export function returnTokenPools(address: Address): TokenPools {
 class DynamicFunding {
     longSharesOutstanding: BigInt
     shortSharesOutstanding: BigInt
-    lastDfrUpdate: BigInt
     currentDFR: BigInt
 }
 
@@ -61,7 +60,6 @@ export function returnDynamicFunding(address: Address): DynamicFunding {
     let dynamicFundingObject = new DynamicFunding()
     dynamicFundingObject.longSharesOutstanding = returnedDynamicFunding.value0
     dynamicFundingObject.shortSharesOutstanding = returnedDynamicFunding.value1
-    dynamicFundingObject.lastDfrUpdate = returnedDynamicFunding.value2
     dynamicFundingObject.currentDFR = currentDFR
 
     return dynamicFundingObject
