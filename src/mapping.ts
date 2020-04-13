@@ -1,12 +1,12 @@
 import { Futureswap, TradeOpen, TradeClose, TradeLiquidate, AddCollateral, FrontRunning, UpdateLiquidity, InternalExchange } from '../generated/Futureswap/Futureswap'
 import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral, OpenTrade, CloseTrade } from '../generated/schema'
 import { BigIntEth } from './helpers'
+import { returnTradesInfo } from './getters'
 
 
 export function handleNewTradeOpen(event: TradeOpen): void {
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
-  let futureswap = Futureswap.bind(event.address)
-  let returnedTrade = futureswap.tradeIdToTrade(event.params.tradeId)
+  let returnedTrade = returnTradesInfo(event.address, event.params.tradeId)
   let trade = new Trade(id)
   trade.tradeId = event.params.tradeId
   trade.exchange = event.address
@@ -22,10 +22,10 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.timestampOpen = event.params.timestamp.toI32()
   trade.referralOpen = event.params.referral
 
-  trade.stableTokenCollateral = returnedTrade.value0
-  trade.assetTokenBorrowed = returnedTrade.value4
-  trade.stablePoolShares = returnedTrade.value5
-  trade.poolOwnershipShares = returnedTrade.value6
+  trade.stableTokenCollateral = returnedTrade.stableTokenCollateral
+  trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed
+  trade.stablePoolShares = returnedTrade.stablePoolShares
+  trade.poolOwnershipShares = returnedTrade.poolOwnershipShares
   trade.save()
 
   let tradeWithCollateralId = event.transaction.hash.toHex()
@@ -53,10 +53,10 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   tradeOpened.oracleRoundId = event.params.oracleRoundId
   tradeOpened.timestampOpen = event.params.timestamp.toI32()
   tradeOpened.referral = event.params.referral
-  tradeOpened.stableTokenCollateral = returnedTrade.value0
-  tradeOpened.assetTokenBorrowed = returnedTrade.value4
-  tradeOpened.stablePoolShares = returnedTrade.value5
-  tradeOpened.poolOwnershipShares = returnedTrade.value6
+  tradeOpened.stableTokenCollateral = returnedTrade.stableTokenCollateral
+  tradeOpened.assetTokenBorrowed = returnedTrade.assetTokenBorrowed
+  tradeOpened.stablePoolShares = returnedTrade.stablePoolShares
+  tradeOpened.poolOwnershipShares = returnedTrade.poolOwnershipShares
   tradeOpened.save()
   
 }
@@ -64,7 +64,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
 export function handleNewTradeClose(event: TradeClose): void {
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
   let futureswap = Futureswap.bind(event.address)
-  let returnedTrade = futureswap.tradeIdToTrade(event.params.tradeId)
+  let returnedTrade = returnTradesInfo(event.address, event.params.tradeId)
   let trade = new Trade(id)
   trade.tradeId = event.params.tradeId
   trade.exchange = event.address
@@ -78,10 +78,10 @@ export function handleNewTradeClose(event: TradeClose): void {
   trade.assetRedemptionAmount = event.params.assetRedemptionAmount
   trade.timestampClose = event.params.timestamp.toI32()
   trade.referralClose = event.params.referral
-  trade.stableTokenCollateral = returnedTrade.value0
-  trade.assetTokenBorrowed = returnedTrade.value4
-  trade.stablePoolShares = returnedTrade.value5
-  trade.poolOwnershipShares = returnedTrade.value6
+  trade.stableTokenCollateral = returnedTrade.stableTokenCollateral
+  trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed
+  trade.stablePoolShares = returnedTrade.stablePoolShares
+  trade.poolOwnershipShares = returnedTrade.poolOwnershipShares
   trade.save()
 
   let tradeClosedId = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
@@ -97,10 +97,10 @@ export function handleNewTradeClose(event: TradeClose): void {
   tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice).div(BigIntEth())
   tradeClosed.timestampClose = event.params.timestamp.toI32()
   tradeClosed.referral = event.params.referral
-  tradeClosed.stableTokenCollateral = returnedTrade.value0
-  tradeClosed.assetTokenBorrowed = returnedTrade.value4
-  tradeClosed.stablePoolShares = returnedTrade.value5
-  tradeClosed.poolOwnershipShares = returnedTrade.value6
+  tradeClosed.stableTokenCollateral = returnedTrade.stableTokenCollateral
+  tradeClosed.assetTokenBorrowed = returnedTrade.assetTokenBorrowed
+  tradeClosed.stablePoolShares = returnedTrade.stablePoolShares
+  tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares
   tradeClosed.save()
 }
 
