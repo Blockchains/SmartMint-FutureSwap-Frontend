@@ -2,7 +2,7 @@ import { Futureswap, TradeOpen, TradeClose, TradeLiquidate, AddCollateral, Front
 import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral, OpenTrade, CloseTrade } from '../generated/schema'
 import { BigIntEth } from './helpers'
 import { returnTradesInfo } from './getters'
-import { logDFR, logTokenPools } from './loggers'
+import { logDFR, logTokenPools, logTradeClosed } from './loggers'
 
 
 export function handleNewTradeOpen(event: TradeOpen): void {
@@ -67,7 +67,6 @@ export function handleNewTradeOpen(event: TradeOpen): void {
 
 export function handleNewTradeClose(event: TradeClose): void {
   let id = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
-  let futureswap = Futureswap.bind(event.address)
   let returnedTrade = returnTradesInfo(event.address, event.params.tradeId)
   let trade = new Trade(id)
   trade.tradeId = event.params.tradeId
@@ -88,25 +87,7 @@ export function handleNewTradeClose(event: TradeClose): void {
   trade.poolOwnershipShares = returnedTrade.poolOwnershipShares
   trade.save()
 
-  let tradeClosedId = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
-  let tradeClosed = new CloseTrade(tradeClosedId)
-  tradeClosed.tradeId = event.params.tradeId
-  tradeClosed.exchange = event.address
-  tradeClosed.tradeOwner = event.params.tradeOwner
-  tradeClosed.isLong = event.params.isLong
-  tradeClosed.collateral = event.params.collateral
-  tradeClosed.assetPrice = event.params.assetPrice
-  tradeClosed.stablePrice = event.params.stablePrice
-  tradeClosed.assetRedemptionAmount = event.params.assetRedemptionAmount
-  tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice).div(BigIntEth())
-  tradeClosed.timestampClose = event.params.timestamp.toI32()
-  tradeClosed.referral = event.params.referral
-  tradeClosed.stableTokenCollateral = returnedTrade.stableTokenCollateral
-  tradeClosed.assetTokenBorrowed = returnedTrade.assetTokenBorrowed
-  tradeClosed.stablePoolShares = returnedTrade.stablePoolShares
-  tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares
-  tradeClosed.save()
-
+  logTradeClosed(event)
   logDFR(event.transaction.hash, event.address, event.block.timestamp, "TradeClose")
   logTokenPools(event.transaction.hash, event.address, event.block.timestamp, "TradeClose")
 

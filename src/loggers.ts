@@ -35,3 +35,25 @@ export function logTokenPools(transactionHash: Bytes, address: Address, timestam
     tokenPools.save()
 
 }
+
+export function logTradeClosed(event: TradeClose): void {
+  let returnedTrade = returnTradesInfo(event.address, event.params.tradeId)
+  let tradeClosedId = event.address.toHexString().concat("-").concat(event.params.tradeId.toString())
+  let tradeClosed = new CloseTrade(tradeClosedId)
+  tradeClosed.tradeId = event.params.tradeId
+  tradeClosed.exchange = event.address
+  tradeClosed.tradeOwner = event.params.tradeOwner
+  tradeClosed.isLong = event.params.isLong
+  tradeClosed.collateral = event.params.collateral
+  tradeClosed.assetPrice = event.params.assetPrice
+  tradeClosed.stablePrice = event.params.stablePrice
+  tradeClosed.assetRedemptionAmount = event.params.assetRedemptionAmount
+  tradeClosed.positionValue = event.params.assetRedemptionAmount.times(event.params.assetPrice).div(BigIntEth())
+  tradeClosed.timestampClose = event.params.timestamp.toI32()
+  tradeClosed.referral = event.params.referral
+  tradeClosed.stableTokenCollateral = returnedTrade.stableTokenCollateral
+  tradeClosed.assetTokenBorrowed = returnedTrade.assetTokenBorrowed
+  tradeClosed.stablePoolShares = returnedTrade.stablePoolShares
+  tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares
+  tradeClosed.save()
+}
