@@ -156,3 +156,15 @@ type TokenPool @entity {
   timestamp: Int!
   reason: String!
 }
+
+type Imbalance @entity {
+  id: ID!
+  exchange: Bytes!
+  recommendedTrade: BigInt!
+  poolNeedsAsset: Boolean
+  imbalanceAmount: BigInt!
+  assetPoolValue: BigInt!
+  shortPoolValue: BigInt!
+  timestamp: Int!
+  reason: String!
+}
