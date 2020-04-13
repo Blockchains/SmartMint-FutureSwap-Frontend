@@ -21,6 +21,7 @@ type Trade @entity {
   assetTokenBorrowed: BigInt
   stablePoolShares: BigInt
   poolOwnershipShares: BigInt
+  isLiquidated: Boolean
 }
 
 type Liquidation @entity {

@@ -155,6 +155,15 @@ export function handleNewLiquidate(event: TradeLiquidate): void {
     event.block.timestamp,
     "Liquidation"
   );
+  let id = event.address
+    .toHexString()
+    .concat("-")
+    .concat(event.params.tradeId.toString());
+  let trade = new Trade(id);
+  trade.isLiquidated = true;
+  trade.tradeOpen = false
+
+
 }
 
 export function handleAddCollateral(event: AddCollateral): void {
