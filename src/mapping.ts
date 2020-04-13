@@ -202,7 +202,7 @@ export function handleFrontRunning(event: FrontRunning): void {
 }
 
 export function handleUpdateLiquidity(event: UpdateLiquidity): void {
-  logUpdateLiquidity(event)
+  logUpdateLiquidity(event);
 
   logDFR(
     event.transaction.hash,
@@ -225,7 +225,7 @@ export function handleUpdateLiquidity(event: UpdateLiquidity): void {
 }
 
 export function handleInternalExchange(event: InternalExchange): void {
-  logInternalExchange(event)
+  logInternalExchange(event);
 
   logDFR(
     event.transaction.hash,

@@ -188,14 +188,16 @@ export function logBalancerInformation(
   let returnedInternalExchange = returnInternalExchangeInfo(address);
   let imbalance = new Imbalance(transactionHash.toHex());
   let futureswapInstance = Futureswap.bind(address);
-  let booleanHandling = futureswapInstance.calculateImbalance();
-  imbalance.exchange = address;
-  imbalance.timestamp = timestamp.toI32();
-  imbalance.reason = reason;
-  imbalance.recommendedTrade = returnedInternalExchange.recommendedTrade;
-  imbalance.poolNeedsAsset = booleanHandling.value1;
-  imbalance.imbalanceAmount = returnedInternalExchange.imbalanceAmount;
-  imbalance.assetPoolValue = returnedInternalExchange.assetPoolValue;
-  imbalance.shortPoolValue = returnedInternalExchange.shortPoolValue;
-  imbalance.save();
+  let booleanHandling = futureswapInstance.try_calculateImbalance();
+  if (returnedInternalExchange) {
+    imbalance.exchange = address;
+    imbalance.timestamp = timestamp.toI32();
+    imbalance.reason = reason;
+    imbalance.recommendedTrade = returnedInternalExchange.recommendedTrade;
+    imbalance.poolNeedsAsset = booleanHandling.value.value1;
+    imbalance.imbalanceAmount = returnedInternalExchange.imbalanceAmount;
+    imbalance.assetPoolValue = returnedInternalExchange.assetPoolValue;
+    imbalance.shortPoolValue = returnedInternalExchange.shortPoolValue;
+    imbalance.save();
+  }
 }

@@ -3,7 +3,7 @@ import {
   BigDecimal,
   log,
   Bytes,
-  Address,
+  Address
 } from "@graphprotocol/graph-ts";
 import { Futureswap } from "../generated/Futureswap/Futureswap";
 
@@ -73,21 +73,32 @@ export function returnDynamicFunding(address: Address): DynamicFunding {
 }
 
 class InternalExchange {
-    recommendedTrade: BigInt
-    // poolNeedsAsset: Boolean
-    imbalanceAmount: BigInt
-    assetPoolValue: BigInt
-    shortPoolValue: BigInt
+  recommendedTrade: BigInt;
+  // poolNeedsAsset: Boolean
+  imbalanceAmount: BigInt;
+  assetPoolValue: BigInt;
+  shortPoolValue: BigInt;
 }
-export function returnInternalExchangeInfo(address: Address): InternalExchange {
-    let futureswapInstance = Futureswap.bind(address);
-    let returnedInternalExchange = futureswapInstance.calculateImbalance();
+export function returnInternalExchangeInfo(
+  address: Address
+): InternalExchange | null {
+  let futureswapInstance = Futureswap.bind(address);
+  let returnedInternalExchange = futureswapInstance.try_calculateImbalance();
+  if (returnedInternalExchange.reverted) {
+    log.info("calculate Imbalance reverted", []);
+    return null;
+  } else {
     let internalExchangeObject = new InternalExchange();
-    internalExchangeObject.recommendedTrade = returnedInternalExchange.value0
+    internalExchangeObject.recommendedTrade =
+      returnedInternalExchange.value.value0;
     // internalExchangeObject.poolNeedsAsset = returnedInternalExchange.value1
-    internalExchangeObject.imbalanceAmount = returnedInternalExchange.value2
-    internalExchangeObject.assetPoolValue = returnedInternalExchange.value3
-    internalExchangeObject.shortPoolValue = returnedInternalExchange.value4
+    internalExchangeObject.imbalanceAmount =
+      returnedInternalExchange.value.value2;
+    internalExchangeObject.assetPoolValue =
+      returnedInternalExchange.value.value3;
+    internalExchangeObject.shortPoolValue =
+      returnedInternalExchange.value.value4;
 
-    return internalExchangeObject
+    return internalExchangeObject;
+  }
 }
