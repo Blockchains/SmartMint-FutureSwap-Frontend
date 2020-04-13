@@ -2,6 +2,7 @@ import { Futureswap, TradeOpen, TradeClose, TradeLiquidate, AddCollateral, Front
 import { Trade, Liquidation, Collateral, FrontRunningCase, LiquidityAddition, Balancer, TradeWithCollateral, OpenTrade, CloseTrade } from '../generated/schema'
 import { BigIntEth } from './helpers'
 import { returnTradesInfo } from './getters'
+import { logDFR } from './loggers'
 
 
 export function handleNewTradeOpen(event: TradeOpen): void {
@@ -21,7 +22,6 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.oracleRoundId = event.params.oracleRoundId
   trade.timestampOpen = event.params.timestamp.toI32()
   trade.referralOpen = event.params.referral
-
   trade.stableTokenCollateral = returnedTrade.stableTokenCollateral
   trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed
   trade.stablePoolShares = returnedTrade.stablePoolShares
@@ -58,6 +58,8 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   tradeOpened.stablePoolShares = returnedTrade.stablePoolShares
   tradeOpened.poolOwnershipShares = returnedTrade.poolOwnershipShares
   tradeOpened.save()
+
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
   
 }
 
@@ -102,6 +104,9 @@ export function handleNewTradeClose(event: TradeClose): void {
   tradeClosed.stablePoolShares = returnedTrade.stablePoolShares
   tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares
   tradeClosed.save()
+
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+
 }
 
 
@@ -116,6 +121,9 @@ export function handleNewLiquidate(event: TradeLiquidate): void {
   liquidation.stableToSendTradeOwner = event.params.stableToSendTradeOwner
   liquidation.timestamp = event.params.timestamp
   liquidation.save()
+
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+
 }
 
 export function handleAddCollateral(event: AddCollateral): void {
@@ -138,6 +146,8 @@ export function handleAddCollateral(event: AddCollateral): void {
   tradeWithCollateral.tradeOwner = event.params.tradeOwner
   tradeWithCollateral.save()
   
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+
 }
 
 export function handleFrontRunning(event: FrontRunning): void {
@@ -161,6 +171,9 @@ export function handleUpdateLiquidity(event: UpdateLiquidity): void {
   updateLiquidity.addedLiquidity = event.params.addedLiq
   updateLiquidity.timestamp = event.params.timestamp
   updateLiquidity.save()
+
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
+
 }
 
 export function handleInternalExchange(event: InternalExchange): void {
@@ -175,5 +188,6 @@ export function handleInternalExchange(event: InternalExchange): void {
   balancer.timestamp = event.params.timestamp
   balancer.save()
 
+  logDFR(event.transaction.hash, event.address, event.block.timestamp, "tradeOpen")
 }
 

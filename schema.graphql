@@ -132,3 +132,14 @@ type OpenTrade @entity {
   stablePoolShares: BigInt
   poolOwnershipShares: BigInt
 }
+
+type DyanmicFunding @entity {
+  id: ID!
+  exchange: Bytes!
+  longSharesOutstanding: BigInt!
+  shortSharesOutstanding: BigInt!
+  lastDfrUpdate: BigInt!
+  currentDFR: BigInt!
+  timestamp: Int!
+  reason: String!
+}
