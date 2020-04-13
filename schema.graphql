@@ -42,6 +42,7 @@ type Collateral @entity {
     addedCollateral: BigInt!
     assetPrice: BigInt!
     stablePrice: BigInt!
+    timestamp: BigInt!
 }
 
 type FrontRunningCase @entity {

@@ -126,6 +126,7 @@ export function handleAddCollateral(event: AddCollateral): void {
   addCollateral.addedCollateral = event.params.addedCollateral
   addCollateral.assetPrice = event.params.assetPrice
   addCollateral.stablePrice = event.params.stablePrice
+  addCollateral.timestamp = event.block.timestamp
   addCollateral.save()
 
   let tradeWithCollateralId = event.transaction.hash.toHex()
