@@ -154,6 +154,8 @@ type TokenPool @entity {
   stableTokenBorrowPool: BigInt!
   stableTokenCollateralPool: BigInt!
   stablePoolSharesOutstanding: BigInt!
+  assetTokenAvailable: BigInt!
+  stableTokenAvailable: BigInt!
   timestamp: Int!
   reason: String!
 }

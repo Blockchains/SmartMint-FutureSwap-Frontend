@@ -69,6 +69,9 @@ export function logTokenPools(
   tokenPools.stableTokenCollateralPool = returnData.stableTokenCollateralPool;
   tokenPools.stablePoolSharesOutstanding =
     returnData.stablePoolSharesOutstanding;
+  tokenPools.assetTokenAvailable = returnData.assetTokenAvailable
+  tokenPools.stableTokenAvailable = returnData.stableTokenAvailable
+
   tokenPools.save();
 }
 
