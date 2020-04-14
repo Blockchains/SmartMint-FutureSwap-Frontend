@@ -201,3 +201,15 @@ export function logBalancerInformation(
     imbalance.save();
   }
 }
+
+export function logAddCollateral(event: AddCollateral): void {
+    let addCollateral = new Collateral(event.transaction.hash.toHex());
+    addCollateral.exchange = event.address;
+    addCollateral.tradeId = event.params.tradeId;
+    addCollateral.tradeOwner = event.params.tradeOwner;
+    addCollateral.addedCollateral = event.params.addedCollateral;
+    addCollateral.assetPrice = event.params.assetPrice;
+    addCollateral.stablePrice = event.params.stablePrice;
+    addCollateral.timestamp = event.block.timestamp;
+    addCollateral.save();
+}

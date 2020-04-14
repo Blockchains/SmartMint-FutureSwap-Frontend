@@ -30,7 +30,8 @@ import {
   logOpenTrade,
   logUpdateLiquidity,
   logInternalExchange,
-  logBalancerInformation
+  logBalancerInformation,
+  logAddCollateral
 } from "./loggers";
 
 export function handleNewTradeOpen(event: TradeOpen): void {
@@ -169,15 +170,7 @@ export function handleNewLiquidate(event: TradeLiquidate): void {
 }
 
 export function handleAddCollateral(event: AddCollateral): void {
-  let addCollateral = new Collateral(event.transaction.hash.toHex());
-  addCollateral.exchange = event.address;
-  addCollateral.tradeId = event.params.tradeId;
-  addCollateral.tradeOwner = event.params.tradeOwner;
-  addCollateral.addedCollateral = event.params.addedCollateral;
-  addCollateral.assetPrice = event.params.assetPrice;
-  addCollateral.stablePrice = event.params.stablePrice;
-  addCollateral.timestamp = event.block.timestamp;
-  addCollateral.save();
+  logAddCollateral(event)
 
   let tradeWithCollateralId = event.transaction.hash.toHex();
   let tradeWithCollateral = new TradeWithCollateral(tradeWithCollateralId);
