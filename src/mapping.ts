@@ -162,6 +162,8 @@ export function handleNewLiquidate(event: TradeLiquidate): void {
   let trade = new Trade(id);
   trade.isLiquidated = true;
   trade.tradeOpen = false
+  trade.timestampClose = event.params.timestamp.toI32()
+  trade.save()
 
 
 }
