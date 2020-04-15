@@ -12,6 +12,7 @@ class TradeObject {
   assetTokenBorrowed: BigInt;
   stablePoolShares: BigInt;
   poolOwnershipShares: BigInt;
+  chainlinkAssetAddress: Address
 }
 
 export function returnTradesInfo(
@@ -25,6 +26,7 @@ export function returnTradesInfo(
   tradeObject.assetTokenBorrowed = returnedTrade.value4;
   tradeObject.stablePoolShares = returnedTrade.value5;
   tradeObject.poolOwnershipShares = returnedTrade.value6;
+  tradeObject.chainlinkAssetAddress = returnedTrade.value9
 
   return tradeObject;
 }

@@ -59,6 +59,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
   trade.stablePoolShares = returnedTrade.stablePoolShares;
   trade.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+  trade.chainlinkAssetAddress = returnedTrade.chainlinkAssetAddress
   trade.save();
 
   let tradeWithCollateralId = event.transaction.hash.toHex();
