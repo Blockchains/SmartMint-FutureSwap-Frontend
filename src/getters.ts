@@ -3,7 +3,7 @@ import {
   BigDecimal,
   log,
   Bytes,
-  Address
+  Address,
 } from "@graphprotocol/graph-ts";
 import { Futureswap } from "../generated/Futureswap/Futureswap";
 
@@ -44,9 +44,20 @@ class TokenPools {
 export function returnTokenPools(address: Address): TokenPools {
   let futureswapInstance = Futureswap.bind(address);
   let returnedTokenPool = futureswapInstance.tokenPools();
-  let assetTokenReturned = futureswapInstance.getAssetTokenAvailable()
-  let stableTokenReturned = futureswapInstance.getStableTokenAvailable()
+  let assetTokenReturned = futureswapInstance.try_getAssetTokenAvailable();
+  let stableTokenReturned = futureswapInstance.try_getStableTokenAvailable();
   let tokenPoolObject = new TokenPools();
+
+  if (assetTokenReturned.reverted || stableTokenReturned.reverted) {
+    tokenPoolObject.assetTokenBorrowPool = returnedTokenPool.value0;
+    tokenPoolObject.longBorrowValue = returnedTokenPool.value1;
+    tokenPoolObject.shortAssetBorrowPool = returnedTokenPool.value2;
+    tokenPoolObject.shortBorrowValue = returnedTokenPool.value3;
+    tokenPoolObject.stableTokenBorrowPool = returnedTokenPool.value4;
+    tokenPoolObject.stableTokenCollateralPool = returnedTokenPool.value5;
+    tokenPoolObject.stablePoolSharesOutstanding = returnedTokenPool.value6;
+    return tokenPoolObject;
+  }
   tokenPoolObject.assetTokenBorrowPool = returnedTokenPool.value0;
   tokenPoolObject.longBorrowValue = returnedTokenPool.value1;
   tokenPoolObject.shortAssetBorrowPool = returnedTokenPool.value2;
@@ -54,8 +65,8 @@ export function returnTokenPools(address: Address): TokenPools {
   tokenPoolObject.stableTokenBorrowPool = returnedTokenPool.value4;
   tokenPoolObject.stableTokenCollateralPool = returnedTokenPool.value5;
   tokenPoolObject.stablePoolSharesOutstanding = returnedTokenPool.value6;
-  tokenPoolObject.assetTokenAvailable = assetTokenReturned
-  tokenPoolObject.stableTokenAvailable = stableTokenReturned
+  tokenPoolObject.assetTokenAvailable = assetTokenReturned.value;
+  tokenPoolObject.stableTokenAvailable = stableTokenReturned.value;
 
   return tokenPoolObject;
 }

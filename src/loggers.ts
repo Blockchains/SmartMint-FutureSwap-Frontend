@@ -6,7 +6,7 @@ import {
   AddCollateral,
   FrontRunning,
   UpdateLiquidity,
-  InternalExchange
+  InternalExchange,
 } from "../generated/Futureswap/Futureswap";
 import {
   Trade,
@@ -20,14 +20,14 @@ import {
   CloseTrade,
   DyanmicFunding,
   TokenPool,
-  Imbalance
+  Imbalance,
 } from "../generated/schema";
 import { BigIntEth } from "./helpers";
 import {
   returnTradesInfo,
   returnDynamicFunding,
   returnTokenPools,
-  returnInternalExchangeInfo
+  returnInternalExchangeInfo,
 } from "./getters";
 import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
 
@@ -69,9 +69,12 @@ export function logTokenPools(
   tokenPools.stableTokenCollateralPool = returnData.stableTokenCollateralPool;
   tokenPools.stablePoolSharesOutstanding =
     returnData.stablePoolSharesOutstanding;
-  tokenPools.assetTokenAvailable = returnData.assetTokenAvailable
-  tokenPools.stableTokenAvailable = returnData.stableTokenAvailable
-
+  if (returnData.assetTokenAvailable) {
+    tokenPools.assetTokenAvailable = returnData.assetTokenAvailable;
+  }
+  if (returnData.stableTokenAvailable) {
+    tokenPools.stableTokenAvailable = returnData.stableTokenAvailable;
+  }
   tokenPools.save();
 }
 
@@ -206,13 +209,13 @@ export function logBalancerInformation(
 }
 
 export function logAddCollateral(event: AddCollateral): void {
-    let addCollateral = new Collateral(event.transaction.hash.toHex());
-    addCollateral.exchange = event.address;
-    addCollateral.tradeId = event.params.tradeId;
-    addCollateral.tradeOwner = event.params.tradeOwner;
-    addCollateral.addedCollateral = event.params.addedCollateral;
-    addCollateral.assetPrice = event.params.assetPrice;
-    addCollateral.stablePrice = event.params.stablePrice;
-    addCollateral.timestamp = event.block.timestamp;
-    addCollateral.save();
+  let addCollateral = new Collateral(event.transaction.hash.toHex());
+  addCollateral.exchange = event.address;
+  addCollateral.tradeId = event.params.tradeId;
+  addCollateral.tradeOwner = event.params.tradeOwner;
+  addCollateral.addedCollateral = event.params.addedCollateral;
+  addCollateral.assetPrice = event.params.assetPrice;
+  addCollateral.stablePrice = event.params.stablePrice;
+  addCollateral.timestamp = event.block.timestamp;
+  addCollateral.save();
 }

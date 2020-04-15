@@ -15,6 +15,7 @@ type Trade @entity {
   oracleRoundId: BigInt
   timestampOpen: Int
   timestampClose: Int
+  lastUpdate: Int
   referralClose: Bytes
   referralOpen: Bytes
   stableTokenCollateral: BigInt
@@ -154,8 +155,8 @@ type TokenPool @entity {
   stableTokenBorrowPool: BigInt!
   stableTokenCollateralPool: BigInt!
   stablePoolSharesOutstanding: BigInt!
-  assetTokenAvailable: BigInt!
-  stableTokenAvailable: BigInt!
+  assetTokenAvailable: BigInt
+  stableTokenAvailable: BigInt
   timestamp: Int!
   reason: String!
 }

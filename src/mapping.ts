@@ -53,6 +53,7 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.openFee = event.params.openFee;
   trade.oracleRoundId = event.params.oracleRoundId;
   trade.timestampOpen = event.params.timestamp.toI32();
+  trade.lastUpdate = event.params.timestamp.toI32()
   trade.referralOpen = event.params.referral;
   trade.stableTokenCollateral = returnedTrade.stableTokenCollateral;
   trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
@@ -108,6 +109,7 @@ export function handleNewTradeClose(event: TradeClose): void {
   trade.stablePrice = event.params.stablePrice;
   trade.assetRedemptionAmount = event.params.assetRedemptionAmount;
   trade.timestampClose = event.params.timestamp.toI32();
+  trade.lastUpdate = event.params.timestamp.toI32()
   trade.referralClose = event.params.referral;
   trade.stableTokenCollateral = returnedTrade.stableTokenCollateral;
   trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
@@ -164,6 +166,7 @@ export function handleNewLiquidate(event: TradeLiquidate): void {
   trade.isLiquidated = true;
   trade.tradeOpen = false
   trade.timestampClose = event.params.timestamp.toI32()
+  trade.lastUpdate = event.params.timestamp.toI32()
   trade.save()
 
 
