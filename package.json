@@ -9,7 +9,8 @@
     "codegen": "graph codegen",
     "build": "graph build",
     "auth": "graph auth https://api.thegraph.com/deploy/ ",
-    "deploy": "graph deploy jesseabram/futureswap --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "deploy-rinkeby": "graph deploy jesseabram/futureswap --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
+    "deploy-main": "graph deploy futureswap/futureswap-v1 --ipfs https://api.thegraph.com/ipfs/ --node https://api.thegraph.com/deploy/",
     "deploy-local": "graph deploy example --ipfs http://localhost:5001 --node http://127.0.0.1:8020"
   },
   "devDependencies": {
