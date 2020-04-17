@@ -6,13 +6,17 @@ import {
   Address,
 } from "@graphprotocol/graph-ts";
 import { Futureswap } from "../generated/Futureswap/Futureswap";
+import { Chainlink } from "../generated/Futureswap/Chainlink";
+
 
 class TradeObject {
   stableTokenCollateral: BigInt;
   assetTokenBorrowed: BigInt;
   stablePoolShares: BigInt;
   poolOwnershipShares: BigInt;
-  chainlinkAssetAddress: Address
+  chainlinkAssetAddress: Address;
+  tradeOpen: BigInt;
+  roundId: BigInt
 }
 
 export function returnTradesInfo(
@@ -27,6 +31,8 @@ export function returnTradesInfo(
   tradeObject.stablePoolShares = returnedTrade.value5;
   tradeObject.poolOwnershipShares = returnedTrade.value6;
   tradeObject.chainlinkAssetAddress = returnedTrade.value9
+  tradeObject.tradeOpen = returnedTrade.value7
+  tradeObject.roundId = returnedTrade.value8
 
   return tradeObject;
 }
@@ -120,4 +126,33 @@ export function returnInternalExchangeInfo(
 
     return internalExchangeObject;
   }
+}
+
+
+
+export function returnFrontRunningPrice(chainlilnkAddress: Address, futureswapAddress: Address, roundId: BigInt, timestampOpen: BigInt): BigInt | null {
+  let chainlinkInstance = Chainlink.bind(chainlilnkAddress)
+  let futureswapInstance = Futureswap.bind(futureswapAddress)
+  let state = futureswapInstance.state()
+  let nextRoundTimestamp = chainlinkInstance.try_getTimestamp(roundId.plus(BigInt.fromI32(1)))
+  if (nextRoundTimestamp.reverted) {
+    return null
+  }
+  let frontRunningTime = state.value5
+  if(nextRoundTimestamp.value <= BigInt.fromI32(0)) {
+      return null
+  }
+  let timeDifference =  nextRoundTimestamp.value.minus(timestampOpen)
+  if(timeDifference <= BigInt.fromI32(0)) {
+    return null
+  }
+  
+  if(timeDifference > frontRunningTime) {
+    return null
+  }
+  let newPrice = chainlinkInstance.try_getAnswer(roundId.plus(BigInt.fromI32(1)))
+  if (newPrice.reverted) {
+    return null
+  }
+  return newPrice.value
 }

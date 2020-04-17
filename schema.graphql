@@ -24,6 +24,7 @@ type Trade @entity {
   poolOwnershipShares: BigInt
   isLiquidated: Boolean
   chainlinkAssetAddress: Bytes
+  frontRunningPrice: BigInt
 }
 
 type Liquidation @entity {
@@ -110,6 +111,7 @@ type CloseTrade @entity {
   assetTokenBorrowed: BigInt
   stablePoolShares: BigInt
   poolOwnershipShares: BigInt
+  frontRunningPrice: BigInt
 }
 
 type OpenTrade @entity {

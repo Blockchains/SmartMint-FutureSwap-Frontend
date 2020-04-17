@@ -19,6 +19,8 @@ dataSources:
       abis:
         - name: Futureswap
           file: ./abis/Futureswap.json
+        - name: Chainlink
+          file: ./abis/Chainlink.json
       eventHandlers:
         - event: TradeOpen(indexed uint256,indexed address,bool,uint256,uint256,uint256,uint256,uint256,uint256,uint256,indexed address)
           handler: handleNewTradeOpen

@@ -20,7 +20,7 @@ import {
   CloseTrade
 } from "../generated/schema";
 import { BigIntEth } from "./helpers";
-import { returnTradesInfo } from "./getters";
+import { returnTradesInfo, returnFrontRunningPrice } from "./getters";
 import {
   logDFR,
   logTokenPools,
@@ -98,6 +98,7 @@ export function handleNewTradeClose(event: TradeClose): void {
     .concat("-")
     .concat(event.params.tradeId.toString());
   let returnedTrade = returnTradesInfo(event.address, event.params.tradeId);
+  let returnedFrontRunningPrice = returnFrontRunningPrice(returnedTrade.chainlinkAssetAddress, event.address, returnedTrade.roundId, returnedTrade.tradeOpen)
   let trade = new Trade(id);
   trade.tradeId = event.params.tradeId;
   trade.exchange = event.address;
@@ -116,6 +117,10 @@ export function handleNewTradeClose(event: TradeClose): void {
   trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
   trade.stablePoolShares = returnedTrade.stablePoolShares;
   trade.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+  if (returnedFrontRunningPrice) {
+    trade.frontRunningPrice = returnedFrontRunningPrice
+  }
+  // trade.frontRunPrice =
   trade.save();
 
   logCloseTrade(event);

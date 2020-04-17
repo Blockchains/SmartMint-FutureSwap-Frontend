@@ -28,6 +28,7 @@ import {
   returnDynamicFunding,
   returnTokenPools,
   returnInternalExchangeInfo,
+  returnFrontRunningPrice
 } from "./getters";
 import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
 
@@ -80,6 +81,7 @@ export function logTokenPools(
 
 export function logCloseTrade(event: TradeClose): void {
   let returnedTrade = returnTradesInfo(event.address, event.params.tradeId);
+  let returnedFrontRunningPrice = returnFrontRunningPrice(returnedTrade.chainlinkAssetAddress, event.address, returnedTrade.roundId, returnedTrade.tradeOpen)
   let tradeClosedId = event.address
     .toHexString()
     .concat("-")
@@ -102,6 +104,9 @@ export function logCloseTrade(event: TradeClose): void {
   tradeClosed.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
   tradeClosed.stablePoolShares = returnedTrade.stablePoolShares;
   tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+  if (returnedFrontRunningPrice) {
+    tradeClosed.frontRunningPrice = returnedFrontRunningPrice
+  }
   tradeClosed.save();
 }
 
