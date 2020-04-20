@@ -55,11 +55,13 @@ export function handleNewTradeOpen(event: TradeOpen): void {
   trade.timestampOpen = event.params.timestamp.toI32();
   trade.lastUpdate = event.params.timestamp.toI32()
   trade.referralOpen = event.params.referral;
+  if (returnedTrade) {
   trade.stableTokenCollateral = returnedTrade.stableTokenCollateral;
   trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
   trade.stablePoolShares = returnedTrade.stablePoolShares;
   trade.poolOwnershipShares = returnedTrade.poolOwnershipShares;
   trade.chainlinkAssetAddress = returnedTrade.chainlinkAssetAddress
+  }
   trade.save();
 
   let tradeWithCollateralId = event.transaction.hash.toHex();
@@ -113,10 +115,12 @@ export function handleNewTradeClose(event: TradeClose): void {
   trade.timestampClose = event.params.timestamp.toI32();
   trade.lastUpdate = event.params.timestamp.toI32()
   trade.referralClose = event.params.referral;
+  if (returnedTrade) {
   trade.stableTokenCollateral = returnedTrade.stableTokenCollateral;
   trade.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
   trade.stablePoolShares = returnedTrade.stablePoolShares;
   trade.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+  }
   if (returnedFrontRunningPrice) {
     trade.frontRunningPrice = returnedFrontRunningPrice
   }

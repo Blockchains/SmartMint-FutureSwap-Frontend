@@ -22,17 +22,20 @@ class TradeObject {
 export function returnTradesInfo(
   address: Address,
   tradeId: BigInt
-): TradeObject {
+): TradeObject | null {
   let futureswapInstance = Futureswap.bind(address);
-  let returnedTrade = futureswapInstance.tradeIdToTrade(tradeId);
+  let returnedTrade = futureswapInstance.try_tradeIdToTrade(tradeId);
   let tradeObject = new TradeObject();
-  tradeObject.stableTokenCollateral = returnedTrade.value0;
-  tradeObject.assetTokenBorrowed = returnedTrade.value4;
-  tradeObject.stablePoolShares = returnedTrade.value5;
-  tradeObject.poolOwnershipShares = returnedTrade.value6;
-  tradeObject.chainlinkAssetAddress = returnedTrade.value9
-  tradeObject.tradeOpen = returnedTrade.value7
-  tradeObject.roundId = returnedTrade.value8
+  if (returnedTrade.reverted) {
+    return null
+  }
+  tradeObject.stableTokenCollateral = returnedTrade.value.value0;
+  tradeObject.assetTokenBorrowed = returnedTrade.value.value4;
+  tradeObject.stablePoolShares = returnedTrade.value.value5;
+  tradeObject.poolOwnershipShares = returnedTrade.value.value6;
+  tradeObject.chainlinkAssetAddress = returnedTrade.value.value9
+  tradeObject.tradeOpen = returnedTrade.value.value7
+  tradeObject.roundId = returnedTrade.value.value8
 
   return tradeObject;
 }

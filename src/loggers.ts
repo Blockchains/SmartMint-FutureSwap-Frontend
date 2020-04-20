@@ -100,10 +100,12 @@ export function logCloseTrade(event: TradeClose): void {
     .div(BigIntEth());
   tradeClosed.timestampClose = event.params.timestamp.toI32();
   tradeClosed.referral = event.params.referral;
+  if (returnTradesInfo) {
   tradeClosed.stableTokenCollateral = returnedTrade.stableTokenCollateral;
   tradeClosed.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
   tradeClosed.stablePoolShares = returnedTrade.stablePoolShares;
   tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+  }
   if (returnedFrontRunningPrice) {
     tradeClosed.frontRunningPrice = returnedFrontRunningPrice
   }
@@ -157,10 +159,12 @@ export function logOpenTrade(event: TradeOpen): void {
   tradeOpened.oracleRoundId = event.params.oracleRoundId;
   tradeOpened.timestampOpen = event.params.timestamp.toI32();
   tradeOpened.referral = event.params.referral;
+  if (returnedTrade) {
   tradeOpened.stableTokenCollateral = returnedTrade.stableTokenCollateral;
   tradeOpened.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
   tradeOpened.stablePoolShares = returnedTrade.stablePoolShares;
   tradeOpened.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+  }
   tradeOpened.save();
 }
 
