@@ -66,6 +66,8 @@ type LiquidityAddition @ entity {
   lstPrice: BigInt!
   liquidityMinted: BigInt!
   addedLiquidity: Boolean!
+  stablePrice: BigInt
+  assetPrice: BigInt
   timestamp: BigInt!
 }
 

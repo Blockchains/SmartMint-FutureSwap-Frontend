@@ -8,7 +8,6 @@ import {
 import { Futureswap } from "../generated/Futureswap/Futureswap";
 import { Chainlink } from "../generated/Futureswap/Chainlink";
 
-
 class TradeObject {
   stableTokenCollateral: BigInt;
   assetTokenBorrowed: BigInt;
@@ -16,7 +15,7 @@ class TradeObject {
   poolOwnershipShares: BigInt;
   chainlinkAssetAddress: Address;
   tradeOpen: BigInt;
-  roundId: BigInt
+  roundId: BigInt;
 }
 
 export function returnTradesInfo(
@@ -27,15 +26,15 @@ export function returnTradesInfo(
   let returnedTrade = futureswapInstance.try_tradeIdToTrade(tradeId);
   let tradeObject = new TradeObject();
   if (returnedTrade.reverted) {
-    return null
+    return null;
   }
   tradeObject.stableTokenCollateral = returnedTrade.value.value0;
   tradeObject.assetTokenBorrowed = returnedTrade.value.value4;
   tradeObject.stablePoolShares = returnedTrade.value.value5;
   tradeObject.poolOwnershipShares = returnedTrade.value.value6;
-  tradeObject.chainlinkAssetAddress = returnedTrade.value.value9
-  tradeObject.tradeOpen = returnedTrade.value.value7
-  tradeObject.roundId = returnedTrade.value.value8
+  tradeObject.chainlinkAssetAddress = returnedTrade.value.value9;
+  tradeObject.tradeOpen = returnedTrade.value.value7;
+  tradeObject.roundId = returnedTrade.value.value8;
 
   return tradeObject;
 }
@@ -131,31 +130,57 @@ export function returnInternalExchangeInfo(
   }
 }
 
+class Price {
+  assetPrice: BigInt;
+  stablePrice: BigInt;
+}
 
+export function returnPrice(address: Address): Price | null {
+  let futureswapInstance = Futureswap.bind(address);
+  let returnedAssetTokenPrice = futureswapInstance.try_getAssetTokenPrice();
+  let returnedStableTokenPrice = futureswapInstance.try_getStableTokenPrice();
+  if (returnedAssetTokenPrice.reverted || returnedStableTokenPrice.reverted) {
+    return null;
+  }
+  let price = new Price();
+  price.assetPrice = returnedAssetTokenPrice.value;
+  price.stablePrice = returnedStableTokenPrice.value;
 
-export function returnFrontRunningPrice(chainlilnkAddress: Address, futureswapAddress: Address, roundId: BigInt, timestampOpen: BigInt): BigInt | null {
-  let chainlinkInstance = Chainlink.bind(chainlilnkAddress)
-  let futureswapInstance = Futureswap.bind(futureswapAddress)
-  let state = futureswapInstance.state()
-  let nextRoundTimestamp = chainlinkInstance.try_getTimestamp(roundId.plus(BigInt.fromI32(1)))
+  return price;
+}
+
+export function returnFrontRunningPrice(
+  chainlilnkAddress: Address,
+  futureswapAddress: Address,
+  roundId: BigInt,
+  timestampOpen: BigInt
+): BigInt | null {
+  let chainlinkInstance = Chainlink.bind(chainlilnkAddress);
+  let futureswapInstance = Futureswap.bind(futureswapAddress);
+  let state = futureswapInstance.state();
+  let nextRoundTimestamp = chainlinkInstance.try_getTimestamp(
+    roundId.plus(BigInt.fromI32(1))
+  );
   if (nextRoundTimestamp.reverted) {
-    return null
+    return null;
   }
-  let frontRunningTime = state.value5
-  if(nextRoundTimestamp.value <= BigInt.fromI32(0)) {
-      return null
+  let frontRunningTime = state.value5;
+  if (nextRoundTimestamp.value <= BigInt.fromI32(0)) {
+    return null;
   }
-  let timeDifference =  nextRoundTimestamp.value.minus(timestampOpen)
-  if(timeDifference <= BigInt.fromI32(0)) {
-    return null
+  let timeDifference = nextRoundTimestamp.value.minus(timestampOpen);
+  if (timeDifference <= BigInt.fromI32(0)) {
+    return null;
   }
-  
-  if(timeDifference > frontRunningTime) {
-    return null
+
+  if (timeDifference > frontRunningTime) {
+    return null;
   }
-  let newPrice = chainlinkInstance.try_getAnswer(roundId.plus(BigInt.fromI32(1)))
+  let newPrice = chainlinkInstance.try_getAnswer(
+    roundId.plus(BigInt.fromI32(1))
+  );
   if (newPrice.reverted) {
-    return null
+    return null;
   }
-  return newPrice.value
+  return newPrice.value;
 }

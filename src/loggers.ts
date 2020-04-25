@@ -28,7 +28,8 @@ import {
   returnDynamicFunding,
   returnTokenPools,
   returnInternalExchangeInfo,
-  returnFrontRunningPrice
+  returnFrontRunningPrice,
+  returnPrice,
 } from "./getters";
 import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts";
 
@@ -81,7 +82,12 @@ export function logTokenPools(
 
 export function logCloseTrade(event: TradeClose): void {
   let returnedTrade = returnTradesInfo(event.address, event.params.tradeId);
-  let returnedFrontRunningPrice = returnFrontRunningPrice(returnedTrade.chainlinkAssetAddress, event.address, returnedTrade.roundId, returnedTrade.tradeOpen)
+  let returnedFrontRunningPrice = returnFrontRunningPrice(
+    returnedTrade.chainlinkAssetAddress,
+    event.address,
+    returnedTrade.roundId,
+    returnedTrade.tradeOpen
+  );
   let tradeClosedId = event.address
     .toHexString()
     .concat("-")
@@ -101,13 +107,13 @@ export function logCloseTrade(event: TradeClose): void {
   tradeClosed.timestampClose = event.params.timestamp.toI32();
   tradeClosed.referral = event.params.referral;
   if (returnTradesInfo) {
-  tradeClosed.stableTokenCollateral = returnedTrade.stableTokenCollateral;
-  tradeClosed.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
-  tradeClosed.stablePoolShares = returnedTrade.stablePoolShares;
-  tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+    tradeClosed.stableTokenCollateral = returnedTrade.stableTokenCollateral;
+    tradeClosed.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
+    tradeClosed.stablePoolShares = returnedTrade.stablePoolShares;
+    tradeClosed.poolOwnershipShares = returnedTrade.poolOwnershipShares;
   }
   if (returnedFrontRunningPrice) {
-    tradeClosed.frontRunningPrice = returnedFrontRunningPrice
+    tradeClosed.frontRunningPrice = returnedFrontRunningPrice;
   }
   tradeClosed.save();
 }
@@ -160,16 +166,17 @@ export function logOpenTrade(event: TradeOpen): void {
   tradeOpened.timestampOpen = event.params.timestamp.toI32();
   tradeOpened.referral = event.params.referral;
   if (returnedTrade) {
-  tradeOpened.stableTokenCollateral = returnedTrade.stableTokenCollateral;
-  tradeOpened.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
-  tradeOpened.stablePoolShares = returnedTrade.stablePoolShares;
-  tradeOpened.poolOwnershipShares = returnedTrade.poolOwnershipShares;
+    tradeOpened.stableTokenCollateral = returnedTrade.stableTokenCollateral;
+    tradeOpened.assetTokenBorrowed = returnedTrade.assetTokenBorrowed;
+    tradeOpened.stablePoolShares = returnedTrade.stablePoolShares;
+    tradeOpened.poolOwnershipShares = returnedTrade.poolOwnershipShares;
   }
   tradeOpened.save();
 }
 
 export function logUpdateLiquidity(event: UpdateLiquidity): void {
   let updateLiquidity = new LiquidityAddition(event.transaction.hash.toHex());
+  let returnedPrice = returnPrice(event.address);
   updateLiquidity.exchange = event.address;
   updateLiquidity.provider = event.params.provider;
   updateLiquidity.assetTokenAmount = event.params.assetTokenAmount;
@@ -178,6 +185,10 @@ export function logUpdateLiquidity(event: UpdateLiquidity): void {
   updateLiquidity.liquidityMinted = event.params.liquidityMinted;
   updateLiquidity.addedLiquidity = event.params.addedLiq;
   updateLiquidity.timestamp = event.params.timestamp;
+  if (returnedPrice) {
+    updateLiquidity.assetPrice = returnedPrice.assetPrice;
+    updateLiquidity.stablePrice = returnedPrice.stablePrice;
+  }
   updateLiquidity.save();
 }
 
