@@ -6,10 +6,10 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Futureswap
-    network: rinkeby
+    network: mainnet
     source:
       abi: Futureswap
-      startBlock: 6072323
+      startBlock: 9851267
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.3
